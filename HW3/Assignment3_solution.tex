@@ -1,0 +1,382 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%       PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{bbold}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%Add useful short-cut commands here
+
+%1st order derivative wrt x
+\newcommand{\dxone}[1]{\frac{d#1}{dx}}
+%2nd order derivative wrt x
+\newcommand{\dxtwo}[1]{\frac{d^2#1}{dx^2}}
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\eth}{^{\text{th}}}
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+%rank
+\newcommand{\rank}{\mathrm{rank}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}}
+%----------------------------------------------------------------------------------------
+%       DOCUMENT STRUCTURE COMMANDS
+%       Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 3 - Solutions}
+\date{Issued: October 9, 2013}
+\author{Due: October 16, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+% Problem 1
+\begin{homeworkProblem}
+\begin{enumerate}[(a)]
+%(5)
+\item Find a basis for the column space and row space of matrix $A$ given by
+\[ A = \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 4 & 6 \\
+0 & 0 & 0 & 1 & 2
+\end{bmatrix} \]
+
+ %(10)
+\item  Construct a matrix $B$ such that the null space of $B$ is identical to the row space of $A$.
+\end{enumerate}
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item  We have the following matrix $A$:
+\[A = \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 4 & 6 \\
+0 & 0 & 0 & 1 & 2
+\end{bmatrix}. \]
+A basis for the column space of $A$ can be found in various ways. (Finding a basis for the row space is similar.) One way is to perform Gaussian Elimination (GE) on $A^T$, then find the independent rows of $A^T$ (corresponding to the independent columns of $A$).\\
+Alternatively, one can also do a GE on $A$ and then use the ``subtle theorem" discussed in class. Specifically, GE gives us the matrix $U$. The independent columns in $U$ are the columns with the nonzero pivots. Recall that the ``subtle theorem" tells that the independent columns in $A$ are the columns in those same positions. This would give us the choices of columns of $A$ as a basis for the column space.\\
+We can also make a dimensional argument to justify our choices of columns of $A$ as a basis: we select independent columns of $A$ and we select as many as the number of the rank of $A$, i.e. the dimension of the column space of $A$. Now we perform GE on $A$
+\[
+\begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 4 & 6 \\
+0 & 0 & 0 & 1 & 2
+\end{bmatrix} \xrightarrow{\text{row } 2 - \text{ row } 1} \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 0 & 0 & 1 & 2 \\
+0 & 0 & 0 & 1 & 2
+\end{bmatrix} 
+\xrightarrow{\text{row } 3 - \text{ row } 2} \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 0 & 0 & 1 & 2 \\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix} = U
+\]
+From GE, we have the upper triangular matrix $U$. Since we have 2 nonzero rows (or 2 pivots), so the rank of $A$ is 2. A basis for its column space can be its $2^{\text{nd}}$ and $4^{\text{th}}$ column:
+\[ \vec{a}_1 = [1\ 1\ 0]^T\ \ \ \vec{a}_2 = [3\ 4\ 1]^T. \]
+A basis for its row space can be the first and second row of $A$:
+\[ \vec{r}_1^T = [0\ 1\ 2\ 3\ 4]\ \ \ \vec{r}_2^T = [0\ 1\ 2\ 4\ 6]. \]
+\end{enumerate}
+}
+
+\problemAnswer{
+\begin{enumerate}[(b)]
+\item We would need $B\vec{r}_1 = \vec{0} \tand B\vec{r}_2 = \vec{0}$. $B$ should have five columns, so $n = 5$. Its null space has dimension 2. For any matrix, the dimension of the nullspace equals $(n-r)$, where $r$ is the rank of $B$. Here $n-r = 2 \tand n = 5$, hence $B$ must be of rank $r = 3$. We might as well make $B$ a $3 \x 5$ matrix.\\
+Note that the nullspace of a matrix and the row space of that same matrix are orthogonal to each other. So here we need $B$ to be a $3\x5$ matrix with 3 independent rows that are orthogonal to $\vec{r}_1,\ \vec{r}_2$. For any row $\vec{b}^T$ of matrix $B$, we must have
+\[ \begin{bmatrix}
+\vec{r}_1^T \\ \vec{r}_2^T
+\end{bmatrix} \vec{b} = \vec{0}, \quad \text{ so } \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 4 & 6 \end{bmatrix} \vec{b} = \vec{0}\]
+We have to find the solution $\vec{b}$ of the above equation. These give two equations for 5 unknowns. As $\vec{r}_1 \tand \vec{r}_2$ are independent, we have $5-2 = 3$ degrees of freedom. In order to find the solution of $\begin{bmatrix}
+\vec{r}_1^T \\ \vec{r}_2^T
+\end{bmatrix} \vec{b} = \vec{0}$, we perform GE on matrix $\begin{bmatrix}
+\vec{r}_1^T \\ \vec{r}_2^T
+\end{bmatrix}$, 
+\[\begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 4 & 6 \end{bmatrix} \xrightarrow{\text{row } 2 - \text{ row } 1} \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 0 & 0 & 1 & 2 \end{bmatrix}
+\]
+Let the solution $\vec{b} = [b_1 \ b_2 \ b_3 \ b_4 \ b_5]^T$. Then we have $$b_4 + 2b_5 = 0, \tand b_2 + 2b_3 + 3b_4 + 4b_5 = 0$$ The first equation gives $b_4 = -2b_5$. Substituting this into the second equation, we have $b_2 + 2b_3 - 2b_5 = 0$. So, $b_2 = -2b_3 + 2b_5$. Therefore, we have the solution in the form $$\vec{b} = \begin{bmatrix} b_1 \\ -2b_3 + 2b_5 \\ b_3 \\ -2b_5 \\ b_5 \end{bmatrix} = b_1\begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix} + b_3\begin{bmatrix} 0 \\ -2 \\ 1 \\ 0 \\ 0 \end{bmatrix} + b_5\begin{bmatrix} 0 \\ 2 \\ 0 \\ -2 \\ 1 \end{bmatrix}$$  
+So, the solution space is of dimension 3. The solution space is spanned by 
+\[ \left\{\begin{bmatrix}
+1 \\ 0 \\ 0 \\ 0 \\ 0 
+\end{bmatrix}, \ \ \begin{bmatrix}
+0 \\ -2 \\ 1 \\ 0 \\ 0
+\end{bmatrix}, \ \ \begin{bmatrix}
+0 \\ 2 \\ 0 \\ -2 \\ 1
+\end{bmatrix} \right\}.
+\]
+We can choose three independent vectors from the solution space to form the 3 rows of matrix $B$.
+For example, we can let
+\[ B = \begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & -2 & 1 & 0 & 0 \\
+0 & 2 & 0 & -2 & 1
+\end{bmatrix}. \]
+For each row $\vec{b}_i^T, i = 1, 2, 3$ of $B$, it is easy to check that $\begin{bmatrix}
+\vec{r}_1^T \\ \vec{r}_2^T
+\end{bmatrix} \vec{b}_i = 0$, which implies that $B\vec{r}_1 = B\vec{r}_2 = 0$. And $B$ has rank 3 because the $1^{\text{st}}$, $3^{\text{rd}}$ and last column of $B$ makes the basis for $\R^3$. Thus the null space of $B$ is spanned by
+$\vec{r}_1,\ \vec{r}_2$, which is identical to the row space of $A$.
+\end{enumerate}
+}
+\end{homeworkProblem}
+
+
+% Problem 2
+\begin{homeworkProblem}
+Let $A$ be an $m \x n$ matrix with rank $r \leq \min\{m,n\}$. Depending on $m,\ n \tand r$, a system $A\vec x=\vec b$ can have none, one, or infinitely many solutions.\\
+For what choices of $m,\ n \tand r$ do each of the following cases hold? If no such $m,\ n \tand r$ can be found explain why not.
+\begin{enumerate}[(a)]
+\item $A\vec{x}=\vec{b}$ has no solutions, regardless of $\vec{b}$
+\item $A\vec{x}=\vec{b}$ has exactly 1 solution for any $\vec{b}$
+\item $A\vec{x}=\vec{b}$ has infinitely many solutions for any $\vec{b}$
+%\item $A\vec{x}=\vec{b}$ has no {\bf or} just 1 solution depending on $\vec{b}$
+%\item $A\vec{x}=\vec{b}$ has no {\bf or} infinitely many solutions depending on $\vec{b}$
+%\item $A\vec{x}=\vec{b}$ has only 1 {\bf or} infinitely many solutions depending on $\vec{b}$
+\end{enumerate}
+({\bf Hint}: think of what conditions the column vectors and column space of $A$ should satisfy.)
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item $A\vec{x}=\vec{b}$ has no solutions, regardless of $\vec{b}$\\
+{\bf Answer:} Impossible. Since for $\vec{b} = 0$ we always have a solution $\vec{x} = 0$.
+
+\item $A\vec{x}=\vec{b}$ has exactly 1 solution for any $\vec{b}$\\
+{\bf Answer:} For any $\vec{b} \in \R^m$ there is exactly one solution to $A\vec{x} = \vec{b}$, this happens if and only if the columns of $A$ form a basis of space $\R^m$. That is, if and only if the column space of $A$ is the full space $\R^m$ and the columns are independent. That is, if and only if $m = n = r$. (Hence if and only if $A$ is square and nonsingular.)
+
+\item $A\vec{x}=\vec{b}$ has infinitely many solutions for any $\vec{b}$\\
+{\bf Answer:} For any $\vec{b} \in \R^m$ there are infinite solutions to $A\vec{x} = \vec{b}$. That is, for any $\vec{b} \in \R^m$ we can find a solution to $A\vec{x} = \vec{b}$ and add to this solution any element of the nullspace of $A$. Therefore we need the nullspace of $A$ to have an infinite number of vectors in it. In other words, the nullspace dimension should be at least 1, i.e. $n-r \ge 1$. Since there is at least one solution for any $\vec{b}$, the columns
+of $A$ must span the full space $\R^m$. Note that the columns of $A$ live in $\R^m$. So we need $r = m$. \\
+On the other hand, if the column space of $A$ is the full space $(r = m)$ and the
+columns are dependent $(r < n)$, then for any $\vec{b} \in \R^m$ there are infinite solutions to $A\vec{x} = \vec{b}$. So the converse is also true.\\
+Therefore a necessary and sufficient condition is that the column space of $A$ is the full
+space $(m = r)$ and the columns are dependent $(r < n)$. That is, the statement is true if and only if $m = r < n$.
+
+%\item $A\vec{x}=\vec{b}$ has no {\bf or} just 1 solution depending on $\vec{b}$\\
+%{\bf Answer:} If and only if the column space of $A$ is not the full space $\R^m$, i.e. $r < m$, and the columns are independent. That is, if and only if $n = r < m$. This condition is necessary and sufficient because we have: (i) ``There exits $\vec{b}_1$ such that $A\vec{x} = \vec{b}_1$ does not have a solution." $\iff$ ``The column space of A is not the full space $\R^m$."; (ii) ``There exits $\vec{b}_2$ such that $A\vec{x} = \vec{b}_2$ has exactly one solution." $\iff$ ``The columns of $A$ are independent."
+%
+%\item $A\vec{x}=\vec{b}$ has no {\bf or} infinitely many solutions depending on $\vec{b}$\\
+%{\bf Answer:} If and only if the column space of $A$ is not the full space $\R^m$, i.e. $r < m$, and the columns are dependent. That is, if and only if $r < m \tand r < n$. This condition is necessary and sufficient because we have: (i) ``There exits $\vec{b}_1$ such that $A\vec{x} = \vec{b}_1$ does not have a solution." $\iff$ ``The column space of $A$ is not the full space $\R^m$."; (ii) ``There exits $\vec{b}_2$ such that $A\vec{x} = \vec{b}_2$ has infinitely many solutions." $\iff$ ``The columns of $A$ are dependent."
+%
+%\item $A\vec{x}=\vec{b}$ has only 1 {\bf or} infinitely many solutions depending on $\vec{b}$\\
+%{\bf Answer:} Impossible. Note that if there exits $\vec{b}_1$ such that the number of solutions to $A\vec{x} = \vec{b}_1$ equals 1, this implies that the columns of $A$ are independent. On the other hand, if there exits $\vec{b}_2$ such that the number of solutions to $A\vec{x} = \vec{b}_2$ equals $\infty$, this implies that the columns of $A$ are dependent. They contradict each other.
+\end{enumerate}
+
+{\bf Remark}\\
+Note that the equation $A\vec{x} = \vec{b}$ could have 
+\begin{itemize}
+\item exactly 1 solution for any $\vec{b}$ (part (b))
+\item infinity many solutions for any $\vec{b}$ (part (c))
+\item no solution for some $\vec{b}$ and has 1 solution for some $\vec{b'}$
+\item no solution for some $\vec{b}$ and has infinitely many solutions for some $\vec{b'}$
+\end{itemize}
+Exercise: Think about the conditions that make the $3^{\text{rd}} \tand 4^{\text{th}}$ cases true.
+}
+\end{homeworkProblem}
+
+% Problem 3
+\begin{homeworkProblem}
+Consider a matrix product $AB$, where $A$ is $m\x n \tand B$ is $n\x p$. Show that the column space of $AB$ is contained in the column space of $A$. Give an example of matrices $A,\ B$ such that those two spaces are not identical.\\
+{\bf Definition.} A vector space $U$ is {\it contained} in another vector space $V$ (denoted as $U \subseteq V$) if every vector $\vec u \in U$ ($\vec u$ in vector space $U$) is also in $V$.
+\\
+{\bf Definition.} We say that two vector spaces are {\it identical} (equal) if $U \subseteq V$ {\bf and} $V \subseteq U$. \\
+(e.g. $V$ is identical to itself since $V \subseteq V$ and $V \subseteq V$.)
+
+\problemAnswer{
+Let $B = [\vec{b}_1, \vec{b}_2, \ldots, \vec{b}_p]$ and $A = [\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_n]$. We have to show that $\mathcal{R}(AB) \subseteq \mathcal{R}(A)$. Since the column space of $AB$ is the span of columns of $AB$ and column space of $A$ is the span of columns of $A$, it suffices to show that any column $j = 1, 2, \ldots, p$ of $AB$ is in $\mathcal{R}(A)$. Consider that any column $j$ of $AB$ is $A\vec{b}_j$. We have to show that $A\vec{b}_j$ can be written as a linear combination of columns of $A$. This is indeed the case since any column $j$ of $AB$ is $$A\vec{b}_j = [\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_n]\vec{b}_j = \sum_{k=1}^n b_{kj}\vec{a}_k,$$ which is a linear combination of columns of $A$. So $A\vec{b}_j \in \mathcal{R}(A)$ for all $j=1,\ldots,p$. Since every column of $AB$ is in $\mathcal{R}(A)$, so $\mathcal{R}(AB) \subseteq \mathcal{R}(A)$. \\ \\
+In order to find an example, we consider that if the two spaces are not identical, then the column space of $AB$ can only be strictly smaller than the column space of $A$. So when trying to construct examples, we want $\rank(AB) < \rank(A)$. 
+\\For example, we can take $A$ to be $m \times m$ and full rank, while $B$ is $m \times p$ with $p < m$. Since $B$ has only $p$ columns we know that $\rank(AB) < \rank(A)$.\\
+As another example: 
+\[ A = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 
+\end{bmatrix}, \ \ 
+B = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 1 & 1 \\
+0 & 0 & 0 
+\end{bmatrix}.\]
+}
+\end{homeworkProblem}
+
+% Problem 4
+\begin{homeworkProblem}
+An $n \x n$ matrix $A$ has a property that the elements in each of its rows sum to 1. Let $P$ be any $n \x n$ permutation matrix. Prove that $(P-A)$ is singular.
+
+\problemAnswer{
+$(P-A)$ is a matrix such that the elements in each of its rows sum to 0. This is because the permutation matrix $P$ has exactly one entry 1 in each row and 0's elsewhere. 
+
+Consider that $(P-A)$ is singular if any only if $\mathcal{N}(P-A)$ contains a nonzero vector. Recall that $\mathcal{N}(P-A) = \left\{\vec{x} \in \R^n | (P-A)\vec{x} = \vec{0} \right\}$. Therefore, in order to show that $\mathcal{N}(P-A)$ contains at least one nonzero vector, we have to find some vector $\vec{v} \neq \vec{0}$ such that $(P-A)\vec{v} = \vec{0}$.
+
+We explore the fact that the elements in each of the rows of $(P-A)$ sum to 0. Let $c_{ij}$ be the $(i,j)$-th entry of matrix $(P-A)$. Then we have 
+\[\vec{0} = \begin{bmatrix}\sum_{j=1}^n c_{1j} \\ \sum_{j=1}^n c_{2j} \\ \vdots \\ \sum_{j=1}^n c_{nj} \end{bmatrix} = (P-A)\begin{bmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{bmatrix}
+\]
+Now let $\vec{v} = [1, 1, \ldots, 1]^T$ be a vector with 1s in all its entries. Then $(P-A)\vec{v} = \vec 0$, which means that $\vec{v}$ is in the null space of $(P-A)$. Since $\vec{v} \neq \vec{0}$, we found a nonzero vector in $\mathcal{N}(P-A)$, that is, $\text{dim } \mathcal{N}(P-A) > 0$. Thus, $(P-A)$ is singular. 
+}
+\end{homeworkProblem}
+
+%Problem 5
+\begin{homeworkProblem}
+Let $V \tand W$ be 3 dimensional subspaces of $\R^5$. Show that $V \tand W$ must have at least one nonzero vector in common.
+
+\problemAnswer{
+\textbf{Solution I}
+
+Let bases of $V \tand W$ be $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\} \tand \{\vec{w}_1, \vec{w}_2, \vec{w}_3\}$, respectively. Then span$\{\vec{v}_1, \vec{v}_2, \vec{v}_3, \vec{w}_1, \vec{w}_2, \vec{w}_3\}$ is a subspace of $\R^5$. Since the dimension of $\R^5$ is 5, the six vectors $\vec{v}_1, \vec{v}_2, \vec{v}_3, \vec{w}_1, \vec{w}_2, \vec{w}_3$ cannot be independent. 
+Thus, there exist constants $\alpha_i, \beta_i,\ i = 1,2,3$ (these constants cannot all be zeros) such that $$\alpha_1\vec{v}_1 + \alpha_2\vec{v}_2 + \alpha_3\vec{v}_3 + \beta_1\vec{w}_1 + \beta_2\vec{w}_2 + \beta_3\vec{w}_3 = \vec 0 \in \R^5.$$ 
+Rearranging the terms, we can write 
+\[ \vec{u} = \alpha_1\vec{v}_1 + \alpha_2\vec{v}_2 + \alpha_3\vec{v}_3 = -(\beta_1\vec{w}_1 + \beta_2\vec{w}_2 + \beta_3\vec{w}_3) \in \R^5. \]
+If $\vec{u}$ is zero, we must have $\alpha_i = 0,\ i = 1,2,3$, since $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ is independent, and $\beta_i = 0,\ i = 1,2,3$, since $\{\vec{w}_1, \vec{w}_2, \vec{w}_3\}$ is independent. However, by the argument above, we cannot have all the constants to be zeros, thus $\vec{u} \neq 0$. 
+
+We have $\vec{u} \in V$, since $\vec{u} = \alpha_1\vec{v}_1 + \alpha_2\vec{v}_2 + \alpha_3\vec{v}_3$. Similarly $\vec{u} \in W$, since $\vec{u} = -(\beta_1\vec{w}_1 + \beta_2\vec{w}_2 + \beta_3\vec{w}_3)$. Thus, we have a nonzero vector $\vec{u} \in \R^5$, which is both in $V$ and in $W$. 
+}
+
+\problemAnswer{
+\textbf{Solution II}
+
+We use proof by contradiction. Let bases of $V$ and $W$ be $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ and $\{\vec{w}_1, \vec{w}_2, \vec{w}_3\}$, respectively. We assume that $V$ and $W$ are disjoint. Then any linear combination of $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ cannot be expressed as a linear combination of $\{\vec{w}_1, \vec{w}_2, \vec{w}_3\}$. Equivalently, the equation $$c_1\vec{v}_1 + c_2\vec{v}_2 + c_3\vec{v}_3 + c_4\vec{w}_1 + c_5\vec{w}_2 + c_6\vec{w}_3 = 0$$ can only have a trivial solution $\vec{c} = [c_1, c_2, c_3, c_4, c_5, c_6]^T = \vec 0$. 
+
+Let $A = [\vec{v}_1, \vec{v}_2, \vec{v}_3, \vec{w}_1, \vec{w}_2, \vec{w}_3]$. So $A$ is a $5 \x 6$ matrix. The linear equation $A\vec{x} = \vec 0$ is a homogeneous underdetermined system, so it must have a non-trivial solution. This contradiction proves that $V$ and $W$ cannot be disjoint. 
+} 
+\end{homeworkProblem}
+
+% Problem 6
+\begin{homeworkProblem}
+\begin{enumerate}[(a)]
+%(5)
+\item The nonzero column vectors $\vec{u} \tand \vec{v}$ have $n$ elements. An $n \x n$ matrix $A$ is given by $A = \vec{u}\vec{v}^T$ ({\bf Note:} this is different from the innerproduct (also sometimes known as the dot product), which we would write as $\vec{v}^T\vec{u}$). Show that the rank of $A$ is 1.
+
+ %(10)
+\item Show that the converse is true. That is, if the rank of a matrix $A$ is 1, then we
+can find two vectors $\vec{u} \tand \vec{v}$, such that $A = \vec{u}\vec{v}^T$.
+\end{enumerate}
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item Since $\vec{u}$ is nonzero, suppose $u_i \neq 0$ for some $i$. Similarly suppose $v_j \neq 0$ for some $j$. Then the $(i,j)$-th element of matrix $A$ is $a_{i,j} = u_iv_j \neq 0$. Therefore, the rank of $A$ is at least one: $\text{r}(A) \geq 1$.
+
+On the other hand, from Problem 3 we know that the column space of $A = \vec{u}\vec{v}^T$ is contained in the column space of $\vec{u}$, which has at most one dimension since $\vec u$ is a vector. Thus, $\text{r}(A) \leq 1$.
+
+Therefore, we have $\text{r}(A) = 1$. 
+
+\item To show the converse is true, observe that since the column space of $A$ is of dimension one, its basis has only one vector. Let this vector be $\vec{u}$. Then every column of $A$ is in the space spanned by the vector $\vec{u}$. That is, for every $i = 1, 2, \ldots, n$, we can find a real number $v_i \in \R$, such that $\vec{a}_i = v_i\vec{u}$. Then we have $$A = [\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_n] = [v_1\vec{u}, v_2\vec{u}, \ldots, v_n\vec{u}] = \vec{u}[v_1, v_2, \ldots, v_n] = \vec{u}\vec{v}^T.$$
+\end{enumerate}
+}
+\end{homeworkProblem}
+
+
+\end{document}

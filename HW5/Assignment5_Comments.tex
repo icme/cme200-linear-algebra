@@ -1,0 +1,147 @@
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{bbold}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\eth}{^{\text{th}}}
+
+
+\newcommand{\R}{\mathbb{R}}
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+%times (cross-product)
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}} 
+ 
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Some Comments on Assignment 5}
+\date{Issued: \today}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% Problem 1 and 2
+\begin{homeworkProblem}[Problem 1 and 2]
+For the splitting methods that we have discussed in class, we split $A = M-N$. In order to find a solution of $A\vec{x} = \vec{b}$, we update 
+\begin{equation} \vec{x}^{(k+1)} = M^{-1}N\vec{x}^{(k)} + M^{-1}\vec{b}\end{equation}
+Suppose $\vec{x}^*$ is a solution to $A\vec{x} = \vec{b}$. Let $\vec{e}^{(k)} = \vec{x}^{(k)} - \vec{x}^*$ be the error at the $k^{th}$ iteration. Then we have shown in class that 
+\begin{equation} \vec{e}^{(k)} = G\vec{e}^{(k-1)} = G^k\vec{e}^{(0)}, \end{equation}
+where $G = M^{-1}N$. Taking the norm, we get
+\begin{equation} \label{error_norm} \|\vec{e}^{(k)}\| \leq \|G\|^k\|\vec{e}^{(0)}\| \end{equation}
+From equation (\ref{error_norm}), you can and cannot conclude the followings:
+\begin{itemize}
+\item We know that if $\|G\| < 1$, then we can guarantee the convergence of the method because $\|G\|^k \to 0$ as $k \to \infty$. So $\vec{e}^{(k)} \to 0$ as $k \to \infty$. So for problem 2(b), it suffices to show that $\|G\| \ll 1$. And you can guarantee that the method converges quickly ($\|\vec{e}^{(k)}\|$ goes to 0 very quickly).
+\item If $\|G\| > 1$, we CANNOT conclude anything about convergence of the method. This is because equation (\ref{error_norm}) does not tell us whether $\|e^{(k)}\|$ is increasing or decreasing as $k$ increases. In particular, if $\|G\| > 1$, you may suspect that the method might diverge, but you cannot conclude that it will surely diverge. So, for problem 1(b) and 2(a), you will have to show the first few iterations to make sure that the methods (Jacobi or Guass-Seidel) diverge for your matrix $A$. 
+\item Suppose you know that a method converges, you CANNOT conclude that $\|G\| < 1$.
+\end{itemize}
+
+Note that everything listed above is what equation (\ref{error_norm}) implies or does not imply. Some of them might be true. However, you will need some other ways to prove it. \\ \\
+One other comment is that when you look at the first few iterations $\vec{x}^{(0)}, \vec{x}^{(1)}, \vec{x}^{(2)}, \ldots$, if the entries of $\vec{x}^{(k)}$ are increasing, it is not clear that the method diverges. You will have to compare your $x^{(k)}$ to the exact solution. This is because it might be the case that your $x^{(k)}$ are increasing toward the exact solution which means the method converges. 
+
+\end{homeworkProblem}
+
+% Problem 3
+\begin{homeworkProblem}[Problem 3]
+
+\end{homeworkProblem}
+  
+  
+% Problem 4
+\begin{homeworkProblem}[Problem 4]
+
+\end{homeworkProblem}
+
+\end{document}

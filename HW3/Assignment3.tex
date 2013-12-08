@@ -1,0 +1,194 @@
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{bbold}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\eth}{^{\text{th}}}
+
+
+\newcommand{\R}{\mathbb{R}}
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+%times (cross-product)
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}} 
+ 
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 3}
+\date{Issued: October 9, 2013}
+\author{Due: October 16, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\textbf{Important:}
+\begin{itemize}
+\item Give complete answers: Do not only give mathematical formulae, but explain what you are doing. Conversely, do not leave out critical intermediate steps in mathematical derivations.
+\item Write your \textbf{name} as well as your \textbf{Sunet ID} on your assignment. \textbf{Please staple pages together.} Points will be docked otherwise.
+\item Questions preceded by  $\star$  are harder and/or more involved.
+\end{itemize}
+
+
+% Problem 1
+\begin{homeworkProblem}
+\begin{enumerate}[(a)]
+%(5)
+\item Find a basis for the column space and row space of matrix $A$ given by
+\[ A = \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 4 & 6 \\
+0 & 0 & 0 & 1 & 2
+\end{bmatrix} \]
+
+ %(10)
+\item  Construct a matrix $B$ such that the null space of $B$ is identical to the row space of $A$.
+\end{enumerate}
+\end{homeworkProblem}
+
+% Problem 2
+\begin{homeworkProblem} %(15)
+Let $A$ be an $m \x n$ matrix with rank $r \leq \min\{m,n\}$. Depending on $m,\ n \tand r$, a system $A\vec x=\vec b$ can have none, one, or infinitely many solutions.\\
+For what choices of $m,\ n \tand r$ do each of the following cases hold? If no such $m,\ n \tand r$ can be found explain why not.
+\begin{enumerate}[(a)]
+\item $A\vec{x}=\vec{b}$ has no solutions, regardless of $\vec{b}$
+\item $A\vec{x}=\vec{b}$ has exactly 1 solution for any $\vec{b}$
+\item $A\vec{x}=\vec{b}$ has infinitely many solutions for any $\vec{b}$
+%\item $A\vec{x}=\vec{b}$ has no {\bf or} just 1 solution depending on $\vec{b}$
+%\item $A\vec{x}=\vec{b}$ has no {\bf or} infinitely many solutions depending on $\vec{b}$
+%\item $A\vec{x}=\vec{b}$ has only 1 {\bf or} infinitely many solutions depending on $\vec{b}$
+\end{enumerate}
+({\bf Hint}: think of what conditions the column vectors and column space of $A$ should satisfy.)
+\end{homeworkProblem}
+  
+  
+% Problem 3
+\begin{homeworkProblem} %(15)
+Consider a matrix product $AB$, where $A$ is $m\x n \tand B$ is $n\x p$. Show that the column space of $AB$ is contained in the column space of $A$. Give an example of matrices $A,\ B$ such that those two spaces are not identical.\\
+{\bf Definition.} A vector space $U$ is {\it contained} in another vector space $V$ (denoted as $U \subseteq V$) if every vector $\vec u \in U$ ($\vec u$ in vector space $U$) is also in $V$.
+\\
+{\bf Definition.} We say that two vector spaces are {\it identical} (equal) if $U \subseteq V$ {\bf and} $V \subseteq U$. \\
+(e.g. $V$ is identical to itself since $V \subseteq V$ and $V \subseteq V$.)
+\end{homeworkProblem}
+  
+
+% Problem 4
+\begin{homeworkProblem} %(15)
+An $n \x n$ matrix $A$ has a property that the elements in each of its rows sum to 1. Let $P$ be any $n \x n$ permutation matrix. Prove that $(P-A)$ is singular.
+\end{homeworkProblem}
+  
+
+% Problem 5
+\begin{homeworkProblem} %(15)
+Let $V \tand W$ be 3 dimensional subspaces of $\R^5$. Show that $V \tand W$ must have at least one nonzero vector in common.
+\end{homeworkProblem}
+
+
+% Problem 6
+\begin{homeworkProblem}
+\begin{enumerate}[(a)]
+%(5)
+\item The nonzero column vectors $\vec{u} \tand \vec{v}$ have $n$ elements. An $n \x n$ matrix $A$ is given by $A = \vec{u}\vec{v}^T$ ({\bf Note:} this is different from the innerproduct (also sometimes known as the dot product), which we would write as $\vec{v}^T\vec{u}$). Show that the rank of $A$ is 1.
+
+ %(10)
+\item Show that the converse is true. That is, if the rank of a matrix $A$ is 1, then we
+can find two vectors $\vec{u} \tand \vec{v}$, such that $A = \vec{u}\vec{v}^T$.
+\end{enumerate}
+\end{homeworkProblem}
+
+\end{document}
+ 
+ 
+ 

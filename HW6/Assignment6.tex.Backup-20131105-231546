@@ -1,0 +1,183 @@
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{bbold}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\eth}{^{\text{th}}}
+
+
+\newcommand{\R}{\mathbb{R}}
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+%times (cross-product)
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}} 
+ 
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 5}
+\date{Issued: October 30, 2013}
+\author{Due: November 6, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\textbf{Important:}
+\begin{itemize}
+\item Give complete answers: Do not only give mathematical formulae, but explain what you are doing. Conversely, do not leave out critical intermediate steps in mathematical derivations.
+\item Write your \textbf{name} as well as your \textbf{Sunet ID} on your assignment. \textbf{Please staple pages together.} Points will be docked otherwise.
+\item Questions preceded by  $\star$  are harder and/or more involved.
+\end{itemize}
+
+
+% Problem 1
+\begin{homeworkProblem}
+True or False? Motivate your answers clearly.
+\begin{enumerate}[(a)]
+%(10)
+\item For a non-singular $n \x n$ matrix $A$, the {\it Jacobi} method for solving $A\vec{x} = \vec{b}$ will always converge to the correct solution, if it converges.
+
+ %(10)
+\item  The {\it Gauss-Seidel} iteration used for solving $A\vec{x} = \vec{b}$ will always converge for any $n \x n$ invertible matrix $A$. 
+\end{enumerate}
+\end{homeworkProblem}
+
+% Problem 2
+\begin{homeworkProblem} 
+\begin{enumerate}[(a)]
+%(10)
+\item Find an invertible $2 \x 2$ matrix for which the {\it Jacobi} method does not converge. Please find a matrix not already shown in class or the workshop.
+
+ %(10)
+\item  Find an invertible $10 \x 10$ non-diagonal matrix for which the {\it Jacobi} method converges very quickly. Please find a matrix not already shown in class or the workshop.
+\end{enumerate}
+\end{homeworkProblem}
+  
+  
+% Problem 3
+\begin{homeworkProblem} 
+In this assignment, we'll be making much use of the 1-norm. We define the 1-norm of a vector $\vec{x}$ as $\|\vec{x}\|_1 = \sum_{i=1}^n |x_i|$, i.e. the sum of the magnitudes of the entries. The 1-norm of an $m \x n$ matrix $A$ is defined as $\|A\|_1 = \max_{1 \leq j \leq n} \sum_{i=1}^n |a_{ij}|$, i.e. the largest column sum. It can be shown that for these norms, $\|A \vec{x}\|_1 \leq \|A\|_1\|\vec{x}\|_1$ (we will not prove this here, but you can use it as given, whenever needed). Compute the 1-norm of the following matrices and vectors
+
+\begin{enumerate}[(a)] %(5 each)
+\item $\vec{x} = (1, 2, 3, \ldots, n)^T$.
+\item $\vec{x} = \left(\frac{1}{n}, \frac{1}{n}, \frac{1}{n}, \ldots, \frac{1}{n} \right)^T$.
+\item $\alpha I$ where $I$ is the $n \x n$ identity matrix.
+\item $J-I$ where $J$ is the $n \x n$ matrix filled with 1s and $I$ is the $n \x n$ identity.  
+\end{enumerate}
+\end{homeworkProblem}
+  
+
+% Problem 4
+\begin{homeworkProblem} 
+In the workshop, we will discuss page rank computations. The linear system is of the form $(I - \alpha P) \vec{x} = \vec{v}$. Here $\alpha$ is the fraction of a page's rank that it propagates to neighbors at each step and each entry in $\vec{v}$ is the amount of rank we give to each page initially. For this problem, we set $\alpha = 0.85$, and all elements $v_i$ of the vector $\vec{v}$ equal to $v_i = 1/n$, where $n$ is the number of total pages in the internet domain we are investigating. The matrices $I$ and $P$ are $n \x n$ matrices. For this problem (and also in general) we do not allow pages to link to themselves. Thus the diagonal elements of the matrix $P$ are all $0$. 
+
+\begin{enumerate}[(a)]
+%(10)
+\item As we will prove in a later part of this problem, the matrix $I - \alpha P$ is invertible, so a unique solution to the pagerank system exists. We'll try to find this solution using the Jacobi iteration. Give the algorithm for the Jacobi iteration for the page rank equation. 
+
+%(15)
+\item Lets assume the answer is the vector $\vec{x}^*$. Analyze the distance between $\vec{x}^*$ and successive iterates of the Jacobi iteration, that is, find the relationship between $\|\vec{x}^{(k+1)} - \vec{x}^*\|_1$ and $\|\vec{x}^{(k)} - \vec{x}^*\|_1$. Note that we measure distance in terms of the 1-norm here. Your analysis must hold for any $n \x n$ page rank matrix $P$. Form your analysis, show that $\alpha$ must be chosen to be smaller than $1$. \\
+(Hint: first compute the 1-norm of $P$.) 
+
+%(15)
+\item Now, show that the matrix $I - \alpha P$ is invertible for any $n \x n$ page rank matrix $P$. \\
+(Hint: don't forget that we have $0 < \alpha < 1$.)
+\end{enumerate}
+\end{homeworkProblem}
+
+\end{document}
+ 
+ 
+ 

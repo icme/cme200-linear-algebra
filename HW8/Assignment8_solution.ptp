@@ -1,0 +1,9 @@
+# PCTeX Project File, Version 1.1
+	name: Assignment8_solution
+	texformat: latex
+	typesetmode: PDF
+	spellwordlist: american
+Assignment8_solution.tex
+Assignment8_solution.log
+Assignment8_solution.aux
+Assignment8_solution.pdf

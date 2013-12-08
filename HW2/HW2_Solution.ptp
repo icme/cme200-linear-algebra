@@ -1,0 +1,6 @@
+# PCTeX Project File, Version 1.1
+	name: HW2_Solution
+	texformat: latex
+	typesetmode: PDF
+	spellwordlist: american
+HW2_Solution.tex

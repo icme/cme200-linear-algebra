@@ -1,0 +1,323 @@
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{bbold}
+
+\usepackage{verbatim}
+
+\usepackage{amssymb}
+\usepackage{bbm}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\tth}{^{\text{th}}}
+
+
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+
+\newcommand{\bva}{\vec a}
+\newcommand{\bvb}{\vec b}
+\newcommand{\bvc}{\vec c}
+
+%times (cross-product)
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+%rank
+\newcommand{\rank}{\mathrm{rank}}
+
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\normII}[1]{\norm{#1}_2}
+\newcommand{\normF}[1]{\norm{#1}_F}
+
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\sij}{_{ij}}
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}} 
+ 
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{CME 200 Workshop 5}
+\date{October 25, 2013}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+
+% Warm up
+\section{Warm up.}
+Let $A$ be a $3\x3$ skew-symmetric matrix, i.e. $A^T = -A$. Find $\det(A)$. (Hint: use properties of determinants.) \\
+What if $A \in \R^{4\x 4}$? Generalize your result to $A\in \R^{n\x n}$.
+\\
+
+\textbf{Solution.}\\
+A general $3\x 3$ skew-symmetric can be written as,
+\[ A = \begin{bmatrix}
+0 & a & b \\
+-a & 0 & c \\
+-b & -c & 0
+\end{bmatrix} \]
+We use properties of determinants (specifically, for $A \in \R^{n\x n}$, $\det(A) = \det(A^T)$ and $\det(kA) = k^n \det(A)$), to find $\det(A)$,
+\[ \det(A) = \det(A^T) = \det(-A) = (-1)^3\det(A) = - \det(A). \]
+Hence, $\det(A) = 0$.\\
+Now, if $A \in \R^{4\x 4}$, the same derivation gives,
+\[ \det(A) = \det(A^T) = \det(-A) = (-1)^4\det(A) = \det(A). \]
+Thus, we can no longer deduce (based on the same derivation) that $\det(A)$ is zero. In fact, we can come up with a simple example of $A \in \R^{4 \x 4}$, for which the determinant is not zero,
+\[ A = \bmat{
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0 \\
+0 & -1 & 0 & 0 \\
+-1 & 0 & 0 & 0 }, \ \ \ \ \det(A)=1. \]
+
+In general, the determinant of a skew-symmetric matrix $A \in \R^{n\x n}$ is given by, 
+\[ \det(A) =  \left\{ \begin{array}{l l} 0 & \quad n \text{ odd}\\
+							      		d &\quad n \text{ even},
+\end{array} \right. \]
+for some $d\in \R$.
+\\
+
+\section*{Cauchy-Schwarz inequality.}
+For any vectors $\bva,\ \bvb \in \R^n$, the following inequality holds,
+\[|\vec a^T \vec b| \le \normII{\vec a} \normII{\vec b} \quad \quad \quad \textbf{(Cauchy-Schwarz)}. \]
+\\
+
+\textbf{Proof.}
+
+First, if either of the vectors $\vec a$,  $\vec b$ is a zero vector, then the Cauchy-Schwarz inequality is satisfied trivially.\\
+Thus, we assume that neither $\bva$, nor $\bvb$ is zero.\\
+Taking $\bvc = \normII{\bva}^2 \bvb - (\bva^T \bvb)\bva$, we derive,
+\[ 0 \le \normII{\bvc}^2 = \bvc^T \bvc = (\normII{\bva}^2\bvb - (\bva^T \bvb)\bva)^T (\normII{\bva}^2\bvb - (\bva^T \bvb)\bva) \]
+\[ = \normII{\bva}^4\normII{\bvb}^2 - 2\normII{\bva}^2 (\bva^T \bvb)^2 + \normII{\bva}^2 (\bva^T \bvb)^2
+= \normII{\bva}^4 \normII{\bvb}^2 - \normII{\bva}^2 (\bva^T \bvb)^2. \]
+Rearranging the inequality and dividing out by $\normII{\bva}^2$ (which is non-zero since $\bva$ is non-zero), we obtain
+\[ (\bva^T \bvb)^2 \le \normII{\bva}^2 \normII{\bvb}^2. \]
+Taking the square root, we get the desired Cauchy-Schwarz inequality
+\[ |\bva^T \bvb| \le \normII{\bva} \normII{\bvb}. \]
+
+[Note: the choice of vector $\vec c$ appears to come from nowhere. In our proof we treated this choice as being "magical" and it just happened to give us exactly what we were looking for. There is a proof that derives this vector $\vec c$ by looking at $f(\gamma) = \normII{\vec a - \gamma \vec b}^2$. However, it requires solving an optimization problem of the function $f$ with respect to $\gamma$ which we preferred to avoid in favour of a straightforward algebraic derivation.]
+
+\section*{Norm compatibility.}
+Recall that matrix norms fall into two groups: induced norms and non-induced norms (cf. lecture notes 1.5)\\
+Given a vector norm $\norm{\cdot}$ (e.g. the Euclidean 2-norm $\normII{\cdot}$, maximum norm $\norm{\cdot}_\infty$, $L_1$ norm $\norm{\cdot}_1$, etc.), we define the induced matrix norm (with respect to $\norm{\cdot}$) to be
+\[ \norm{A} = \max_{\vec x \ne 0} \frac{\norm{A\vec x}}{\norm{\vec{x}}}. \]
+On the other hand, Frobenius matrix norm is an example of a non-induced matrix norm (since we cannot represent it using the formula above with respect to some vector norm).\\
+Now, from the definition of the induced norm, we can easily see that
+$\norm{A \vec x} \le \norm{A}\norm{\vec x}$,
+\[  \norm{A} = \max_{\vec x \ne 0} \frac{\norm{A\vec x}}{\norm{\vec{x}}} \ge \frac{\norm{A\vec x}}{\norm{\vec{x}}}. \]
+Here we will prove that the same inequality holds, if instead of the induced norm, we consider a Frobenius matrix norm and the vector 2-norm.
+\\
+
+\textbf{Problem:}
+Consider $A\in \R^{m \x n}$. Using Cauchy-Schwarz inequality, show
+\[ \normII{A\vec x} \le \normF{A} \normII{\vec x}. \]
+We say that the Frobenius matrix norm $\normF{\cdot}$ and the vector 2-norm  $\normII{\cdot}$ are compatible.\\
+
+\textbf{Solution.}\\
+Recall the definition of the Frobenius norm,
+\[ \normF{A}^2 = \sum_i \sum_j |x\sij|^2 = \sum_i \vec r_i^T \vec r_i = \sum_i \normII{\vec r_i}^2. \]
+Using Cauchy-Schwartz inequality, $|\vec x^T \vec y| \le \normII{\vec x} \normII{\vec y}$, we derive,
+\[ \normII{A\vec x}^2 = \sum_i (\vec r_i^T \vec x)^2 \le \sum_i \normII{\vec r_i}^2 \normII{\vec x}^2 = \left(\sum_i \normII{\vec r_i}^2\right) \normII{\vec x}^2 = \normF{A}^2 \normII{\vec x}^2. \]
+
+
+
+\section*{Full QR vs. Skinny QR.}
+Find the QR decomposition of $A$ using Gram-Schmidt orthogonalization.
+\[ A = \bmat{1 & -1 & 4 & 0 \\
+			 1 & 4 & -2 & 5 \\
+			 1 & 4 &  2 & 5  \\
+			 1 & -1 & 0 & 0}. \]
+\begin{enumerate}
+\item $\vec q_1 = \vec a_1/\normII{\vec a_1}.$
+\[ \vec a_1 = \bmat{1 \\ 1 \\ 1 \\ 1},\ \ \ r_{11} = \normII{\vec a_1} = 2, \] 
+\[ \vec q_1 = \frac{\vec a_1}{r_{11}} = \bmat{1/2 \\ 1/2 \\ 1/2 \\ 1/2} \]
+
+\item $\vec w_2 = \vec a_2 - \vec{q_1} (\vec q_1^T \vec a_2)$\\
+$\vec q_2 = \frac{\vec w_2}{\normII{\vec w_2}}.$
+\[ \vec a_2 = \bmat{-1 \\ 4 \\ 4 \\ -1},\ \ \ r_{12} = \vec q_1^T \vec a_2 = 3,\ \ \ \vec w_2 = \vec a_2 - \vec{q_1}r_{12} = \bmat{-1 \\ 4 \\ 4 \\ -1} - \bmat{3/2 \\ 3/2 \\ 3/2 \\ 3/2} = \bmat{-5/2 \\ 5/2 \\ 5/2 \\ -5/2},\ \ \ \ r_{22} = \normII{\vec w_2} = 5, \]
+\[ \vec q_2 = \frac{\vec w_2}{r_{22}} = \bmat{-1/2 \\ 1/2 \\ 1/2 \\ -1/2} \]
+
+\item $\vec w_3 = \vec a_3 - \vec{q_1} (\vec q_1^T \vec a_3) - \vec{q_2} (\vec q_2^T \vec a_3)$\\
+$\vec q_3 = \frac{\vec w_3}{\normII{\vec w_3}}.$
+\[ \vec a_3 = \bmat{4 \\ -2 \\ 2 \\ 0},\ \ \ r_{13} = \vec q_1^T \vec a_3 = 2,\ \ \ r_{23} = \vec q_2^T \vec a_3 = -2, \] 
+\[ \vec w_3 = \vec a_3 - \vec{q_1}r_{13} - \vec{q_2}r_{23} =  \bmat{4 \\ -2 \\ 2 \\ 0} - \bmat{1 \\ 1 \\ 1 \\ 1} - \bmat{1 \\ -1 \\ -1 \\ 1} = \bmat{2 \\ -2 \\ 2 \\ -2},\ \ \ \ r_{33} = \normII{\vec w_3} = 4, \]
+
+\[ \vec q_3 = \frac{\vec w_3}{r_{33}} = \bmat{1/2 \\ -1/2 \\ 1/2 \\ -1/2} \]
+
+\item $\vec w_4 = \vec a_4 - \vec{q_1} (\vec q_1^T \vec a_4) - \vec{q_2} (\vec q_2^T \vec a_4) - \vec{q_3} (\vec q_3^T \vec a_4)$\\
+$\vec q_4 = \frac{\vec w_4}{\normII{\vec w_4}}.$
+\[ r_{14} = \vec q_1^T \vec a_4 = 5,\ \ \ r_{24} = \vec q_2^T \vec a_4 = 5,\ \ \ r_{34} = \vec q_3^T \vec a_4 = 0, \] 
+\[ \vec w_4 = \vec a_4 - \vec{q_1}r_{14} - \vec{q_2}r_{24} - \vec{q_3}r_{34} =  \vec 0,\ \ \ \ r_{44} = \normII{\vec w_4} = 0, \]
+Since $\vec w_4=\vec 0$, we know that $A$ is singular and it's column space is spanned by the first 3 orthonormal vectors $\vec q_1,\ \vec q_2,\ \vec q_3$.
+\end{enumerate}
+
+Putting $r\sij$'s into matrix form, we have
+\[ R = \bmat{2 & 3 & 2  & 5 \\
+		 	 0 & 5 & -2 & 5 \\
+		 	 0 & 0 & 4  & 0 \\
+		 	 0 & 0 & 0  & 0} \]
+
+We can now form a "skinny" QR decomposition by dropping the last row of $R$,
+\[ \tilde Q = \bmat{1/2 & -1/2 & 1/2 \\
+		 	 		1/2 & 1/2 & -1/2 \\
+		 	 		1/2 & 1/2 & 1/2 \\
+		 	 		1/2 & -1/2 & -1/2}\ \ \ 
+   \tilde R = \bmat{2 & 3 & 2 & 5 \\
+		 	 0 & 5 & -2 & 5 \\
+		 	 0 & 0 & 4  & 0} \]
+\[ A = \tilde Q \tilde R\ \ \ \ \ \ \text{(Skinny QR)} \]
+For the full QR, we need a fourth vector $\vec q$ that will be orthonormal to the first three. One way to find such vector is to take a random vector $\vec a$ and subtract the components of $\vec q_1,\ \vec q_2, \tand \vec q_3$. If the result is non-zero, then (after normalizing) we found the fourth vector $\vec q_4$. We pick $\vec e_3 = [0\ 0\ 1\ 0]^T$ as our "random" vector.
+\[ \vec w = \vec e_3 - \vec{q_1}(\vec q_1^T \vec e_3) - \vec{q_2}(\vec q_2^T \vec e_3) - \vec{q_3}(\vec q_3^T \vec e_3) = \bmat{0 \\ 0 \\ 1 \\ 0} - \bmat{1/4 \\ 1/4 \\ 1/4 \\ 1/4} - \bmat{-1/4 \\ 1/4 \\ 1/4 \\ -1/4} - \bmat{1/4 \\ -1/4 \\ 1/4 \\ -1/4} = \bmat{-1/4 \\ -1/4 \\ 1/4 \\ 1/4}, \]
+
+$\normII{\vec w} = 1/2$\\
+\[ \vec q_4 = \vec w/\normII{\vec w} = \bmat{-1/2 \\ -1/2 \\ 1/2 \\ 1/2}. \]
+Putting $\vec q_i$'s into matrix $Q$ and $r\sij$'s into $R$, we get the desired $QR$ decomposition,
+Thus, we get the full QR decomposition,
+\[ Q = \bmat{1/2 & -1/2 & 1/2 & -1/2 \\
+		 	 1/2 & 1/2 & -1/2 & -1/2 \\
+		 	 1/2 & 1/2 & 1/2  & 1/2 \\
+		 	 1/2 & -1/2 & -1/2 & 1/2}\ \ \ 
+   R = \bmat{2 & 3 & 2 & 5 \\
+		 	 0 & 5 & -2 & 5 \\
+		 	 0 & 0 & 4  & 0 \\
+		 	 0 & 0 & 0  & 0} \]
+\[ A = Q R\ \ \ \ \ \ \text{(Full QR)} \]
+
+
+\section*{Assignment 3 Review.}
+% Problem 3
+\textbf{Problem 3 (HW3).}\\
+Consider a matrix product $AB$, where $A$ is $m\x n \tand B$ is $n\x p$. Show that the column space of $AB$ is contained in the column space of $A$.\\
+{\bf Definition.} A vector space $U$ is {\it contained} in another vector space $V$ (denoted as $U \subseteq V$) if every vector $\vec u \in U$ ($\vec u$ in vector space $U$) is also in $V$.
+\\
+{\bf Definition.} We say that two vector spaces are {\it identical} (equal) if $U \subseteq V$ {\bf and} $V \subseteq U$. \\
+(e.g. $V$ is identical to itself since $V \subseteq V$ and $V \subseteq V$.)
+\\
+
+\textbf{Solution.}\\
+The most concise proof for this exercise follows by recalling that the column space of $A$ is the same as the range of $A$ (denoted $R(A)$).\\
+Now, if $\vec y \in R(AB)$, it means that there exists $\vec x \in \R^p$ such that $AB\vec x = \vec y$ (i.e. $\vec y$ is a linear combination of the columns of $AB$). Using associativity of matrix multiplication, we have,
+\[ \vec y = AB\vec x = A(B\vec x) = A\vec w. \]
+This shows that for a vector $\vec y \in \R^m$, there is a vector $\vec w \in \R^n$, namely $\vec w = B \vec x$, such that $A\vec w = \vec y$. This means that $\vec y$ can be expressed as a linear combination of the columns of $A$, i.e. $\vec y \in R(A)$.\\
+Since for any vector $\vec y \in R(AB)$ we showed that $\vec y$ is also in $R(A)$, by the definition above, $R(AB) \subseteq R(A)$.
+\\
+\\
+
+% Problem 6
+\textbf{Problem 6 (HW3).}
+
+(a) The nonzero column vectors $\vec{u} \tand \vec{v}$ have $n$ elements. An $n \x n$ matrix $A$ is given by $A = \vec{u}\vec{v}^T$.\\ ({\bf Note:} $\vec{u} \vec{v}^T$ is different from the innerproduct $\vec{v}^T \vec{u}$). Show that the rank of $A$ is 1.\\
+
+\textbf{Solution.}\\
+We argue here by looking at the column space of $A$. For any vector $\vec x \in R^n$, we have
+\[ \vec y = A \vec x = \vec u \vec v^T \vec x = (\vec v^T \vec x) \vec u = \al \vec u, \] 
+where $\al = \vec v^T \vec x$ is a scalar.
+Since $\vec x$ was any arbitrary vector in $\R^n$, we know that all vectors in the range space of $A$ are of the form $\vec y = \al \vec u$ with $\vec u \ne \vec 0$, which means that $\rank(A) = \dim(R(A)) = 1$.
+\\
+
+
+% Problem 5
+\textbf{Problem 5 (HW3).}
+Let $V \tand W$ be 3 dimensional subspaces of $\R^5$. Show that $V \tand W$ must have at least one nonzero vector in common.
+\\
+\\
+
+\textbf{Solution.}\\
+We prove by contradiction. Let bases of $V$ and $W$ be $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ and $\{\vec{w}_1, \vec{w}_2, \vec{w}_3\}$, respectively. We assume that $V$ and $W$ are disjoint (that is $V$ and $W$ have no vectors in common). Then any non-trivial linear combination of $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ cannot be expressed as a linear combination of $\{\vec{w}_1, \vec{w}_2, \vec{w}_3\}$. Equivalently, the equation, $A\vec c = \vec 0$,
+\[ c_1\vec{v}_1 + c_2\vec{v}_2 + c_3\vec{v}_3 + c_4\vec{w}_1 + c_5\vec{w}_2 + c_6\vec{w}_3 = 0\]
+can only have a trivial solution $\vec{c} = [c_1, c_2, c_3, c_4, c_5, c_6]^T = \vec 0$. 
+
+Now form a matrix $A = [\vec{v}_1, \vec{v}_2, \vec{v}_3, \vec{w}_1, \vec{w}_2, \vec{w}_3]$. Since $A$ is a $5 \x 6$ matrix, its null space is non-trivial, so the linear equation $A\vec{x} = \vec 0$ must have a non-trivial solution. This contradiction proves that $V$ and $W$ cannot be disjoint. 
+
+\end{document}
+ 
+ 
+ 

@@ -1,0 +1,238 @@
+%
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{bbold}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\eth}{^{\text{th}}}
+
+
+\newcommand{\R}{\mathbb{R}}
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+%times (cross-product)
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}} 
+ 
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%       DOCUMENT STRUCTURE COMMANDS
+%       Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 6}
+\date{Issued: November 6, 2013}
+\author{Due: November 13, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+\textbf{Important:}
+\begin{itemize}
+\item Give complete answers: Do not only give mathematical formulae, but explain what you are doing. Conversely, do not leave out critical intermediate steps in mathematical derivations.
+\item Write your \textbf{name} as well as your \textbf{Sunet ID} on your assignment. \textbf{Please staple pages together.} Points will be docked otherwise.
+\item Questions preceded by  $\star$  are harder and/or more involved.
+\end{itemize}
+
+
+% Problem 1
+\begin{homeworkProblem}
+
+PageRank algorithms revisited (65 pts) Note: For this problem, please refer back to Assignment 5. The solutions will help you in coding your PageRank algorithm.
+
+Recall the linear system for Page Rank:
+$$ (I - \alpha P) \vec{x} = \vec{v}$$
+where $\alpha$ is the fraction of a page’s rank that it propagates to neighbors at each step and $\vec{v}$ the initial rank
+we give to each page. In our problem, we set $\alpha = 0.85$ and the entries of $\vec{v}$ to be $\vec{v}_i$ = $\frac{1}{n}$, with $n$ the total
+number of pages in our network.
+
+The PageRank calculation need not only be used for the internet! In fact, PageRank can be calculated for
+nodes on any connected graph representing any abstraction. For this problem, we will consider a graph of
+movies connected by links if they share at least one common actor. For this purpose, we provide a matlab date file $\texttt{movies.mat}$ that can be downloaded from the Materials $->$ Assignments2013 folder on Coursework.
+Place this file in a local directory accessible in matlab and type $\texttt{clear all; load movies.mat}$. If you look
+in the workspace, you should have a collection of new variables, defined as follows:
+
+
+
+\begin{itemize}
+\item \texttt{links} : rows are (movie, person) pairs (e.g., for \texttt{links(1,:)} equal to [779,20278] means that actor
+personName{20278} was in movie movieName{779}) (James “Jimmy” Stewart in the movie Rope)
+\item \texttt{movieIMDbID} : the IMDb IDs of each movie
+\item \texttt{movieName} : the name of each movie
+\item \texttt{movieRating} : the average IMDb rating of people who have rated this movie online
+\item \texttt{movieVotes} : the number of people who have rated this movie on IMDb
+\item \texttt{movieYear} : the year in which this movie was released
+\item \texttt{personIMDBID} : the IMDB IDs of each actor/actress
+\item \texttt{personName} : the name of each actor/actress
+\end{itemize}
+None of these are the proper PageRank matrix $P$.
+\begin{enumerate}[(a)]
+\item  (20 points)
+Let $C$ be the $m \times n$ matrix defined by $C_{ij} = 1$ if movie i contains actor/actress j. Let $B$ be the $m \times m $ matrix where $B_{ij}$ is the number of actors starring in both movie i and movie j.
+\begin{enumerate}[(i)]
+\item Show how to calculate $B$ from $C$.
+\item Show how to calculate the PageRank matrix $P$ from $B$: (Hint: it may help to construct a small graph of movies and actors (need not be based on real data) and to actually construct these individual matrices)
+\end{enumerate}
+\item (10 points)
+Using matlab, construct the PageRank matrix $P$. DO NOT PRINT THIS MATRIX OUT. Instead, submit the sparsity plot of $P$ using the command $\texttt{spy(P)}$. Use sparse matrix commands to assist you; otherwise, matlab may be temperamental.
+\item (10 points)
+Compute the PageRank vector $\vec{x}$ of the movies in this graph and normalize this quantity so $||\vec{x}||_1 = 1$ (do this after each iteration). List the
+PageRank values and titles of the movies with the five highest PageRank values.
+\item (15 points)
+Compute the PageRank vector $\vec{x}$ of the movies via a Jacobi iteration that you write yourself. Decide on an
+intelligent measure for convergence (assume you do not know the actual PageRank vector $\vec{x}$ because your
+system is too large for a simple backslash calculation.) Explain your choice of convergence criterion.
+Next, plot this convergence measure over the steps in your iteration. How many iterations does it take
+your implementation to get to a tolerance of $10^{-4}$.
+\item (10 points)
+Plot IMDb movie rating vs. PageRank and IMDb movie votes vs. PageRank. Is PageRank a good predictor of movie rating or movie votes?
+\end{enumerate}
+\end{homeworkProblem}
+
+% Problem 2
+\begin{homeworkProblem} 
+Least squares (35 points)
+We measured the temperature T below the ground on an unusually cold day a few weeks ago. The
+temperature was measured as a function of the distance from the ground surface. The outside
+temperature was a balmy 2 deg. Celsius. The data from the measurements are given in the table
+below:
+
+\begin{centering}
+\begin{tabular}{|c|c|}\hline
+Distance (m)  & Temperature (C) \\\hline
+0 & 2.0 \\
+5 & 2.2 \\
+10 & 5.8 \\
+15 & 10.4 \\
+20 & 11.0 \\
+25 & 13.8 \\
+30 & 22.4 \\
+35 & 28.4 \\
+40 & 33.3 \\\hline
+\end{tabular}
+
+\end{centering}
+
+\begin{enumerate}[(a)]
+\item (15 points)
+Write a matlab function that fits the data to a polynomial of degree $n$ using the method of
+least squares.
+Make sure that your function allows you to specify $n$. (Do not use matlab built-in functions
+\texttt{polyfit} or \texttt{polyval} except perhaps to check that your code is correct.)
+Plot the data. On the same axes, plot the polynomial fit for $n = 1$ and $n = 2$. Be sure to
+clearly label your fit curves.
+
+\item (10 points)
+Calculate the residual error in your fitted values and the observed data for $n$ ranging from 0 to 8.
+
+Plot the 2-norm of this residual error against $n$.
+
+Comment on what does this result says about how to choose the order of your polynomial fit.
+
+\item (10 points)
+We improve our drilling and sensing methodology and decide that we can drill to 45m and 50m below ground with minimal efort. We want to estimate the temperature at this new data point.
+
+\begin{enumerate}[(i)]
+\item Provide a table of $n$ versus the predicted temperature at these new data points.
+It turns out that the temperatures are 48.9 deg. Celsius at 45m and 57.9 deg. Celsius at 50m below ground, respectively.
+
+\item Plot the 2-norm of the prediction error only at these two points versus $n$.
+
+\item Comment on what does this result says about how to choose the order of your polynomial fit? Be sure to use what you learned from the previous problem.
+
+\end{homeworkProblem}
+  
+  
+\end{document}
+ 
+ 
+ 

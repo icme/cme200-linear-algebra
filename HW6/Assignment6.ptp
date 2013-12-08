@@ -1,0 +1,6 @@
+# PCTeX Project File, Version 1.1
+	name: Assignment6
+	texformat: latex
+	typesetmode: PDF
+	spellwordlist: american
+Assignment6.tex

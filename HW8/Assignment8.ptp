@@ -1,0 +1,10 @@
+# PCTeX Project File, Version 1.1
+	name: Assignment8
+	texformat: latex
+	typesetmode: PDF
+	spellwordlist: american
+Assignment8.tex
+Assignment8.log
+Assignment8.aux
+mass_spring.png
+Assignment8.pdf

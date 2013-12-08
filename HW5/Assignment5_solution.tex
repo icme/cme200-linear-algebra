@@ -1,0 +1,360 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%       PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{bbold}
+\usepackage{algpseudocode} % for algorithmic 
+\usepackage{algorithm} % for algorithm
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%Add useful short-cut commands here
+
+%1st order derivative wrt x
+\newcommand{\dxone}[1]{\frac{d#1}{dx}}
+%2nd order derivative wrt x
+\newcommand{\dxtwo}[1]{\frac{d^2#1}{dx^2}}
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\eth}{^{\text{th}}}
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+%rank
+\newcommand{\rank}{\mathrm{rank}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}}
+%----------------------------------------------------------------------------------------
+%       DOCUMENT STRUCTURE COMMANDS
+%       Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 5 - Solutions}
+\date{Issued: October 30, 2013}
+\author{Due: November 6, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+% Problem 1
+\begin{homeworkProblem}
+True or False? Motivate your answers clearly.
+\begin{enumerate}[(a)]
+%(10)
+\item For a non-singular $n \x n$ matrix $A$, the {\it Jacobi} method for solving $A\vec{x} = \vec{b}$ will always converge to the correct solution, if it converges.
+
+ %(10)
+\item  The {\it Gauss-Seidel} iteration used for solving $A\vec{x} = \vec{b}$ will always converge for any $n \x n$ invertible matrix $A$. 
+\end{enumerate}
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item True. \\
+Let's look at the general equation for a stationary iteration based on matrix splitting:
+\[ M\vec{x}^{(k+1)} = N \vec{x}^{(k)} + \vec{b}, \ \ M-N = A \]
+In {\it Jacobi} method, $M$ would be the diagonal of $A$. If the iteration converges, then $\vec{x}^{(k+1)} \tand \vec{x}^{(k)}$ will both converge to an $\vec{x}^*$. Then $M \vec{x}^{(k+1)} = N \vec{x}^{(k)} + \vec{b}$ leads to $M \vec{x}^* = N \vec{x}^* + \vec{b}$, or $(M-N)\vec{x}^* = \vec{b}$. And because $M-N = A$, we have $A \vec{x}^* = \vec{b}$. 
+
+\item False. \\
+We give a counter example here.
+\[\begin{bmatrix} -1 & 2 & 0 \\
+2 & -1 & 2 \\
+0 & 2 & -1 \end{bmatrix} \vec{x} = 
+\begin{bmatrix} 1 \\ 3 \\ 1 \end{bmatrix} \]
+with exact solution $\vec{x}^* = [1 \ 1 \ 1]^T$. {\it Gauss-Seidel} gives $M\vec{x}^{(k+1)} = N\vec{x}^{(k)} + \vec{b}$, with
+\[ M = \begin{bmatrix} -1 & 0 & 0 \\
+2 & -1 & 0 \\
+0 & 2 & -1 \end{bmatrix}, \ \ N = \begin{bmatrix} 0 & -2 & 0 \\
+0 & 0 & -2 \\
+0 & 0 & 0 \end{bmatrix} \]
+We get
+\[M^{-1}N = \begin{bmatrix} 0 & 2 & 0 \\
+0 & 4 & 2 \\
+0 & 8 & 4 \end{bmatrix}, \ \ M^{-1}\vec{b} = \begin{bmatrix} -1 \\ -5 \\ -11 \end{bmatrix} \]
+\end{enumerate}
+}
+
+\problemAnswer{
+Noticing that the Frobenius norm of $M^{-1}N$ is about 10.2, which is larger than 1, we may suspect that the iteration will diverge. \\
+Starting with $\vec{x}^{(0)} = \vec{b}$, we quickly diverge:
+\begin{align*}
+\vec{x}^{(1)} &= \begin{bmatrix} 0 & 2 & 0 \\
+0 & 4 & 2 \\
+0 & 8 & 4 \end{bmatrix} \begin{bmatrix} 1 \\ 3 \\ 1 \end{bmatrix} + \begin{bmatrix} -1 \\ -5 \\ -11 \end{bmatrix} = \begin{bmatrix} 5 \\ 9 \\ 17 \end{bmatrix} \\
+\vec{x}^{(2)} &= \begin{bmatrix} 0 & 2 & 0 \\
+0 & 4 & 2 \\
+0 & 8 & 4 \end{bmatrix} \begin{bmatrix} 5 \\ 9 \\ 17 \end{bmatrix} + \begin{bmatrix} -1 \\ -5 \\ -11 \end{bmatrix} = \begin{bmatrix} 17 \\ 65 \\ 129 \end{bmatrix}
+\end{align*}
+}
+\end{homeworkProblem}
+
+
+% Problem 2
+\begin{homeworkProblem}
+\begin{enumerate}[(a)]
+%(10)
+\item Find an invertible $2 \x 2$ matrix for which the {\it Jacobi} method does not converge. Please find a matrix not already shown in class or the workshop.
+
+ %(10)
+\item  Find an invertible $10 \x 10$ non-diagonal matrix for which the {\it Jacobi} method converges very quickly. Please find a matrix not already shown in class or the workshop.
+\end{enumerate}
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item Take a diagonally inferior matrix (as opposed to diagonally dominant). For example, we would take: 
+\[A = \begin{bmatrix} -1 & 2 \\ 
+2 & -1 \end{bmatrix}\]
+To show it does not converge, we can look at the iteration matrix $M^{-1}N$. For {\it Jacobi} we have
+\[M^{-1}N = \begin{bmatrix} -1 & 0 \\ 
+0 & -1 \end{bmatrix}^{-1} 
+\begin{bmatrix} 0 & -2 \\ 
+-2 & 0 \end{bmatrix} = 
+\begin{bmatrix} 0 & 2 \\ 
+2 & 0 \end{bmatrix} \]
+It is easy to see that the Frobenius norm of this amplification matrix is larger than 1, and we expect trouble. We can set up an iteration to show that this iteration does not converge, as long as we don not take the initial guess to be equal to the exact solution to $A\vec{x} = \vec{b}$. For example, we can try to solve for 
+$\vec{b} = \begin{bmatrix} 3 \\ 0 \end{bmatrix}$,
+which has an exact solution 
+$\vec{x} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}$.
+We get as iterates (starting with $\vec{x}^{(0)}$ equal to $\vec{b}$).
+\begin{align*}
+\vec{x}^{(1)} &= \begin{bmatrix} 0 & 2 \\ 2 & 0 \end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} -1 & 0 \\ 0 & -1 \end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} = \begin{bmatrix} -3 \\ 6 \end{bmatrix} \\
+\vec{x}^{(2)} &= \begin{bmatrix} 0 & 2 \\ 2 & 0 \end{bmatrix} \begin{bmatrix} -3 \\ 6 \end{bmatrix} + \begin{bmatrix} -3 \\ 0 \end{bmatrix} = \begin{bmatrix} 9 \\ -6 \end{bmatrix}, \ \ \text{etc.}
+\end{align*}
+which is clearly diverging. \\ \\
+%Repeat this procedure for {\it Gauss-Seidel}, with
+%$M^{-1}N = \begin{bmatrix} -1 & 0 \\ 
+%2 & -1 \end{bmatrix}^{-1} 
+%\begin{bmatrix} 0 & -2 \\ 
+%0 & 0 \end{bmatrix} = 
+%\begin{bmatrix} 0 & 2 \\ 
+%0 & 4 \end{bmatrix}$,
+%whose Frobenius norm is larger than 1.
+%\begin{align*}
+%\vec{x}^{(1)} &= \begin{bmatrix} 0 & 2 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} + \begin{bmatrix} -1 & 0 \\ -2 & -1 \end{bmatrix} \begin{bmatrix} 3 \\ 0 \end{bmatrix} = \begin{bmatrix} -3 \\ -6 \end{bmatrix} \\
+%\vec{x}^{(2)} &= \begin{bmatrix} 0 & 2 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} -3 \\ -6 \end{bmatrix} + \begin{bmatrix} -3 \\ -6 \end{bmatrix} = \begin{bmatrix} -15 \\ -30 \end{bmatrix}, \ \ \text{etc.}
+%\end{align*}
+%which is also diverging. 
+\end{enumerate}
+}
+
+\problemAnswer{
+\begin{enumerate}[(b)]
+\item We expect that for a matrix that is strongly diagonally dominant, the {\it Jacobi} method would converge very quickly. For example, we take
+\[A = \begin{bmatrix} 100 & 1 & 0 & \cdots & 0 & 0 \\
+1 & 100 & 1 & \cdots & 0 & 0 \\
+0 & 1 & 100 & \cdots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 100 & 1 \\
+0 & 0 & 0 & \cdots & 1 & 100 \end{bmatrix}_{10 \x 10}\]
+For this matrix, the amplification matrix is
+\begin{align*}
+M^{-1}N &= \begin{bmatrix} 0.01 & 0 & 0 & \cdots & 0 & 0 \\
+0 & 0.01 & 0 & \cdots & 0 & 0 \\
+0 & 0 & 0.01 & \cdots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 0.01 & 0 \\
+0 & 0 & 0 & \cdots & 0 & 0.01 \end{bmatrix}_{10 \x 10}
+\begin{bmatrix} 0 & -1 & 0 & \cdots & 0 & 0 \\
+-1 & 0 & -1 & \cdots & 0 & 0 \\
+0 & -1 & 0 & \cdots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 0 & -1 \\
+0 & 0 & 0 & \cdots & -1 & 0 \end{bmatrix}_{10 \x 10} \\
+&= \begin{bmatrix} 0 & -0.01 & 0 & \cdots & 0 & 0 \\
+-0.01 & 0 & -0.01 & \cdots & 0 & 0 \\
+0 & -0.01 & 0 & \cdots & 0 & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 0 & -0.01 \\
+0 & 0 & 0 & \cdots & -0.01 & 0 \end{bmatrix}_{10 \x 10}
+\end{align*}
+which has a Frobenius norm much smaller than 1 (actually the Frobenius norm is around 0.04). Hence, the convergence is guaranteed and will be quite fast. 
+\end{enumerate}
+}
+\end{homeworkProblem}
+
+% Problem 3
+\begin{homeworkProblem}
+In this assignment, we'll be making much use of the 1-norm. We define the 1-norm of a vector $\vec{x}$ as $\|\vec{x}\|_1 = \sum_{i=1}^n |x_i|$, i.e. the sum of the magnitudes of the entries. The 1-norm of an $m \x n$ matrix $A$ is defined as $\|A\|_1 = \max_{1 \leq j \leq n} \sum_{i=1}^n |a_{ij}|$, i.e. the largest column sum. It can be shown that for these norms, $\|A \vec{x}\|_1 \leq \|A\|_1\|\vec{x}\|_1$ (we will not prove this here, but you can use it as given, whenever needed). Compute the 1-norm of the following matrices and vectors
+
+\begin{enumerate}[(a)] %(5 each)
+\item $\vec{x} = (1, 2, 3, \ldots, n)^T$.
+\item $\vec{x} = \left(\frac{1}{n}, \frac{1}{n}, \frac{1}{n}, \ldots, \frac{1}{n} \right)^T$.
+\item $\alpha I$ where $I$ is the $n \x n$ identity matrix.
+\item $J-I$ where $J$ is the $n \x n$ matrix filled with 1s and $I$ is the $n \x n$ identity.  
+\end{enumerate}
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item $\|\vec{x}\|_1 = \sum_{i=1}^n |x_i| = \sum_{i=1}^n i = \frac{n(n+1)}{2}$.
+
+\item $\|\vec{x}\|_1 = \sum_{i=1}^n |x_i| = \sum_{i=1}^n \frac{1}{n} = n \left(\frac{1}{n}\right) = 1$.
+
+\item Every column has sum exactly equal to $|\alpha|$, thus the max column sum is $|\alpha|$. 
+
+\item Every column sums to $n-1$, so the max column sum is $n-1$. 
+\end{enumerate}
+}
+\end{homeworkProblem}
+
+% Problem 4
+\begin{homeworkProblem}
+In the workshop, we will discuss page rank computations. The linear system is of the form $(I - \alpha P) \vec{x} = \vec{v}$. Here $\alpha$ is the fraction of a page's rank that it propagates ot neighbors at each step and each entry in $\vec{v}$ is the amount of rank we give to each page initially. For this problem, we set $\alpha = 0.85$, and all elements $v_i$ of the vector $\vec{v}$ equal to $v_i = 1/n$, where $n$ is the number of total pages in the internet domain we are investigating. The matrices $I$ and $P$ are $n \x n$ matrices. For this problem (and also in general) we do not allow pages to link to themselves. Thus the diagonal elements of the matrix $P$ are all $0$. 
+
+\begin{enumerate}[(a)]
+%(10)
+\item As we will prove in a later part of this problem, the matrix $I - \alpha P$ is invertible, so a unique solution to the pagerank system exists. We'll try to find this solution using the Jacobi iteration. Give the algorithm for the Jacobi iteration for the page rank equation. 
+
+%(15)
+\item Lets assume the answer is the vector $\vec{x}^*$. Analyze the distance between $\vec{x}^*$ and successive iterates of the Jacobi iteration, that is, find the relationship between $\|\vec{x}^{(k+1)} - \vec{x}^*\|_1$ and $\|\vec{x}^{(k)} - \vec{x}^*\|_1$. Note that we measure distance in terms of the 1-norm here. Your analysis must hold for any $n \x n$ page rank matrix $P$. Form your analysis, show that $\alpha$ must be chosen to be smaller than $1$. \\
+(Hint: first compute the 1-norm of $P$.) 
+
+%(15)
+\item Now, show that the matrix $I - \alpha P$ is invertible for any $n \x n$ page rank matrix $P$. \\
+(Hint: don't forget that we have $0 < \alpha < 1$.)
+\end{enumerate}
+
+\problemAnswer{
+\begin{enumerate}[(a)]
+\item We split the matrix $I - \alpha P = M - N$, where $M$ is the diagonal to $I - \alpha P$. Remember that the diagonal of $P$ has zeros only, so the diagonal of $I - \alpha P$ is exactly $M = I$. And hence $N = M - (I - \alpha P) = \alpha P$. The Jacobi iteration is the following:
+%\begin{algorithm}[H]
+\begin{algorithmic}
+\State $k = 0$
+\State Choose $\vec{x}^{(0)}$ and compute $\vec{r}^{(0)} = \vec{v} - (I - \alpha P) \vec{x}^{(0)}$
+\While {$k < step\_limit$ and $\|\vec{r}^{(k)}\| \geq \epsilon \left( \|I - \alpha P\|\|\vec{x}^{(k)}\| + \|\vec{v}\|\right)}$
+\State Compute $\vec{x}^{(k+1)} = \alpha P \vec{x}^{(k)} + \vec{v}$
+\State Compute the residual $\vec{r}^{(k+1)} = \vec{v} - (I - \alpha P) \vec{x}^{(k+1)}$
+\State Compute $\|\vec{x}^{(k+1)}\|$ and $\|\vec{r}^{(k+1)}\|$
+\State $k = k+1$
+\EndWhile
+\end{algorithmic}
+%\end{algorithm}
+
+Note that every element of the new iterate can be computed independently of the others (the algorithm is parallelizable). 
+\end{enumerate}
+}
+
+\problemAnswer{
+\begin{enumerate}[(b)]
+\item 
+\begin{align*}
+\| \vec{x}^{(k+1)} - \vec{x}^* \|_1 &= \|\alpha P \vec{x}^{(k)} + \vec{v} - (\alpha P \vec{x}^* + \vec{v})\|_1 \\
+&= |\alpha| \|P(\vec{x}^{(k)} - \vec{x}^*)\|_1 \\
+&\leq |\alpha| \|P\|_1 \| \vec{x}^{(k)} - \vec{x}^*\|_1
+\end{align*}
+Remember that $P$ has non-negative components, and the elements on each column of $P$ add up to 1, indicating $\|P\|_1 = 1$. Also note that $\alpha > 0$.
+\[ \|\vec{x}^{(k+1)} - \vec{x}^*\|_1 \leq \alpha\|\vec{x}^{(k)} - \vec{x}^*\|_1 \]
+Note that $0 < \alpha < 1$, the distance between $\vec{x}^*$ and successive iterates decrease to 0. 
+
+\item Consider any vector $\vec{x}$ such that $(I - \alpha P) \vec{x} = \vec{0}$, so $\vec{x} = \alpha P \vec{x}$. By taking the 1-norm on either side, we find 
+\[ \|\vec{x}\|_1 = \|\alpha P\vec{x}\|_1 \leq |\alpha| \|P\|_1 \|\vec{x}\|_1 = \alpha \|\vec{x}\|_1 \implies (1-\alpha)\|\vec{x}\|_1 \leq 0\]
+Note that $\|P\|_1 = 1$ and $\alpha > 0$. But with $\alpha < 1$, so $1-\alpha > 0$. This implies $\|\vec{x}\|_1 \leq 0$. Since $\|\vec{y}\|_1 \geq 0$ for any $\vec{y}$, this means that $\|\vec{x}\|_1 = 0$. This can only be true if $\vec{x} = \vec{0}$. We showed that $\mathcal{N} (I - \alpha P) = \{ \vec{0} \}$. So, the matrix $I - \alpha P$ is non-singular. 
+\end{enumerate}
+}
+\end{homeworkProblem}
+
+\end{document}

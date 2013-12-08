@@ -1,0 +1,219 @@
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+\usepackage{amsmath}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+
+ \newcommand{\cond}{\mathrm{cond}}
+
+ \newcommand{\trace}{\mathrm{trace}}
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 2 - Numerically solving the steady state heat equation}
+\date{Issued: October 2, 2013}
+\author{Due: October 9, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\textbf{Important:}
+\begin{itemize}
+\item Give complete answers: Do not only give mathematical formulae, but explain what you are doing. Conversely, do not leave out critical intermediate steps in mathematical derivations.
+\item Write your \textbf{name} as well as your \textbf{Sunet ID} on your assignment. \textbf{Please staple pages together.} Points will be docked otherwise.
+\item Questions preceded by  $\star$  are harder and/or more involved.
+\item The theory needed for question 1 (e) (condition numbers) will be covered in class Monday, Oct $7$. 
+\end{itemize}
+
+\begin{homeworkProblem} %(85 points) 
+
+ 
+ In this assignment, we will solve 1D heat equation numerically with different boundary conditions. In 1D, the differential equation is of the form
+ 
+ 
+ \begin{equation*}
+ \frac{d^2T }{dx^2}  = f(x), \qquad \text{for } 0 \leq x \leq 1.
+ \end{equation*}
+ 
+ 
+We interpret this equation as modeling the steady state solution of a heat diffusion problem in a laterally insulated rod with constant thermal conductivity, and a distributed heat source $f$. $T$ denotes temperature.
+Note that this is the same equation that you've seen in class with $f(x) = 0$.
+ \\
+
+ Set the source term $f(x) = 0$ with boundary conditions $T=0$ at $x=0$ and $T=2$ at $x=1$.
+ \\
+ \begin{enumerate}[(a)]
+ %1(a)
+ %(5)
+ \item  Give the exact solution to this differential equation.
+ \\
+ %1(b)
+ %(10)
+\item  Discretize the 1D equation using the central difference scheme we derived in class using a uniform grid with spacing $h = 1/N$ (so that you get the grid points $x_i = i_h$ for $i = 0 \dots N$ as shown in the class). Write an expression for each equation in the system. Be sure to explain your work; do not merely give the final set of equations.
+ \\
+ %1(c)
+ %(5)
+\item   Set up the resulting matrix-vector equation $A \vec x = b$ for $N = 5$, and use Gaussian Elimination to check that the matrix A is nonsingular. (Do this by hand.)
+ \\
+ %1(d)
+ %(20)
+ \item  Now set the source $f(x) = -10\sin(3 \pi x/2)$. Keep the boundary conditions as $T=0$ at $x=0$ and $T=2$ at $x=1$.
+Verify that $T (x) = (2 + 40/(9\pi^2))x + 40/(9\pi^2) \sin(3\pi x/2)$ is the exact solution that solves the differential equation with this source and boundary conditions.
+ \\
+ 
+ Update the matrix-vector system $A \vec x = b$ for this source function. Solve this system $A \vec x = b$ using MATLAB for $N=5$, $N=10$, $N=25$ and $N=200$. Plot all computed solutions together in one figure with the exact solution. Clearly label your graph. Note that the curves may overlap. Use a legend.
+\\
+
+Note: We want you to arrive at a discrete solution for N=200 points here not because we need it for accuracy, but because it will make it hard to construct the matrix in MATLAB element-by-element, which we do not want you to do. Use some of MATLAB's built in functions for creating these matrices. Use the diag command to construct tridiagonal matrices (consult help diag for usage). If you are ambitious, construct A as a sparse matrix using sp-diags, since the sparse representation is more efficient for matrices with few nonzero elements. 
+ \\
+ %1(e)
+ %(10)
+\item  Find the condition number of the matrix A using MATLAB for $N=5$, $N=10$, $N=25$ and $N=200$ (use Frobenius norm to compute the condition number, i.e. $\cond A = \|A\|_F\|A^{-1}\|_F$. There is an in-built MATLAB function for that: cond(A,'fro')). Plot the condition numbers and comment on any pattern that you might find. Perturb the matrix $A$ by $\partial A$ for $\partial A = 0.1A$. Solve the perturbed system of equations $(A + \partial A)x = b$ and plot the solution. Comment on what you see. Can you relate it to the condition number of $A$?
+ \\
+ %1(f)
+ %(20)
+\item  $\star$   Consider a non-zero source defined by the piecewise function
+ 
+  
+ \begin{equation*}
+ f(x) =   \left \{ \begin{array}{cc}  0 &  x < 1/3  \\ 100 & \text{otherwise}  \end{array}  \right.
+ \end{equation*}
+ 
+ With the same boundary conditions as in part (d), show that  the exact solution is 
+ 
+  \begin{equation*}
+ T(x) =   \left \{ \begin{array}{cc}  -\frac{182x}{9} &  x < 1/3  \\ \frac{-482x +50}{9} +\frac{100x^2}{2}  & \text{otherwise}  \end{array}  \right.
+ \end{equation*}
+  
+ 
+ {\bf Hint:} Use the fact that if $f(x)$ is a constant, the equation $d^2T /dx^2 = f(x)$ can easily be solved.  
+  \\
+ 
+  Now solve the system $A \vec x=b$ using MATLAB for $N=5$, $N=10$, $N=25$ and $N=200$. Plot all computed solutions together with the exact solution in one figure.  
+ \\
+ 
+Let $T_N$ denote the solution vector using $N$ grid points and $T_{exact,N}$ denote the vector of the exact solution at the $N$ grid points. %Calculate $\| T_N \|_2$ for the same choices of $N$ as above. 
+How big does $N$ have to be for the relative error $\frac{\| T_{exact,N} - T_N \|_2}{\| T_{exact} \|_2}$ to be less than $0.01$?  
+ \\
+ 
+ How can the problem of having grid points exactly on the discontinuity point of $f(x)$ be resolved?
+ 
+ %1(g)
+ %(10)
+\item  $\star$    With source $f(x) = 0$, perform the same steps as in (1b) and (1c) after replacing the Dirichlet boundary conditions with Neumann conditions $dT/dx = 0$ at $x=0$, $x=1$. That is,
+ 
+ \begin{itemize}
+ \item Give an expression for each equation in the system when it's of size $N$.
+\item Write out the resulting matrix-vector equation $A\vec x=b$ for $N=5$.
+\item Use Gaussian Elimination for $N=5$ (by hand) to show this matrix is singular.
+ \end{itemize}
+ 
+How can you resolve this issue of a singular $A$ without changing the boundary conditions?  
+ %1(h)
+ %(5)
+ \item $\star$    With source $f(x) = 0$, Dirichlet boundary condition at x = 0 (i.e $T = 0$ at $x = 0$) and Neumann conditions $dT/dx = 0$ at $x=1$,
+ 
+  \begin{itemize}
+\item Give an expression for each equation in the system  when it's of size $N$.
+\item Write out the resulting matrix-vector equation $A \vec x=b$ for $N=5$.
+\item Check if the matrix A is singular when $N=5$ (you can use MATLAB to answer the question).
+  \end{itemize}
+  
+  \end{enumerate}
+  
+  \end{homeworkProblem}
+  
+\begin{homeworkProblem} %(15 points) 
+
+Indicate whether the following statements are TRUE or FALSE and motivate your answers clearly. To show a statement false, it is sufficient to give one counter example. To prove a statement true, provide a general proof.
+\\
+  
+\begin{enumerate}[(a)]
+ %2(a)
+ %(8)
+\item $\| A\|_F^2 = \trace(A^TA)$ 
+ %2(b)
+ %(7)
+\item $\cond(\alpha A) =  \alpha \cond(A)$, where $\cond(A)$ denotes the condition number of $A$ and $\alpha > 0$.
+  
+\end{enumerate}
+  
+\end{homeworkProblem}
+  
+  
+  
+  
+  
+  
+  
+\end{document}
+ 
+ 
+ 

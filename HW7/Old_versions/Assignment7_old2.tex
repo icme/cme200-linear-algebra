@@ -1,0 +1,221 @@
+
+\documentclass{article}
+
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{graphicx} % Required to insert images
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+
+
+%th in the exponent (e.g. when writing ith, instead use i$\eth$)
+\newcommand{\tth}{^{\text{th}}}
+
+
+%math symbols such as R
+\newcommand{\I}{\ensuremath{\operatorname{I}}}
+\newcommand{\One}[1]{\ensuremath{\mathbbm{1}_{\left \{ #1 \right \}}}}
+\newcommand{\E}{\ensuremath{\mathbb{E}}}
+\newcommand{\var}{\ensuremath{\operatorname{Var}}}
+\newcommand{\cov}{\ensuremath{\operatorname{Cov}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\eqD}{\ensuremath{\overset{\mathcal{D}}{=}}}
+
+
+%short-cuts for Greek letters
+\newcommand{\al}{\alpha}
+\newcommand{\dlt}{\delta}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\lambda}
+
+%times (cross-product)
+\newcommand{\x}{\times}
+%inverse
+\newcommand{\inv}{^{-1}}
+%cond
+\newcommand{\cond}{\mathrm{cond}}
+%trace
+\newcommand{\trace}{\mathrm{trace}}
+\newcommand{\tr}{\mathrm{tr}}
+
+\newcommand{\twith}{\text{ with }}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tfor}{\text{ for }}
+\newcommand{\tor}{\text{ or }}
+\newcommand{\tat}{\text{ at }}
+
+\newcommand{\ip}{_{i+1}}
+\newcommand{\im}{_{i-1}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\oneby}[1]{\frac{1}{#1}}
+\newcommand{\overto}[1]{\overset{#1}{\longrightarrow}} 
+ 
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{$#1$}}}$}#2}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\title{Assignment 7}
+\date{Issued: November 13, 2013}
+\author{Due: November 20, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\textbf{Important:}
+\begin{itemize}
+\item Give complete answers: Do not only give mathematical formulae, but explain what you are doing. Conversely, do not leave out critical intermediate steps in mathematical derivations.
+\item Write your \textbf{name} as well as your \textbf{Sunet ID} on your assignment. \textbf{Please staple pages together.}
+\item Questions preceded by  $\star$  are harder and/or more involved.
+\end{itemize}
+
+
+% Problem 1
+\begin{homeworkProblem}
+For this problem we assume that eigenvalues and eigenvectors are all real valued.
+\begin{enumerate}[(a)]
+
+\item Let $A$ be an $n \x n$ symmetric matrix.
+Let $\vec q_i$ and $\vec q_j$ be the eigenvectors of $A$ corresponding to the eigenvalues $\la_i$ and $\la_j$ respectively. Show that if $\la_i \ne \la_j$, then $\vec q_i$ and $\vec q_j$ are orthogonal.
+
+\item Let $A$ be an $n \x n$ matrix. We say that $A$ is {\bf positive definite} if for any non-zero vector $\vec x$, the following inequality holds
+\[ \vec x^T A \vec x > 0. \]
+Show that the eigenvalues of a positive definite matrix $A$ are all positive.
+
+\item$\star\star$ Let $A$ be an $n \x n$ matrix. Show that 
+\[ \tr(A) = \sum_{i=1}^n \la_i, \] 
+where $\la_1, \dots, \la_n$ are the eigenvalues of $A$ ($\la_i$'s do not have to be all different).
+
+[Hint 1: One way to prove this is to use the fact that any square matrix with real eigenvalues can be decomposed in the following way (called Schur decomposition)
+\[A = QRQ^T,\]
+where $R$ is an upper triangular matrix and $Q$ is an orthogonal matrix.]
+
+[Hint 2: The following property of trace might be useful: given two matrices $A \in \R^{m \x n}\ \tand B \in \R^{n \x m}$, the trace of their product, $\tr(AB)$, is \textit{invariant under cyclic permutations}, i.e. $\tr(AB) = \tr(BA)$.\\
+Note that this implies $\tr(ABC) = \tr(BCA) = \tr(CAB)$ for any matrices $A,\ B,\ C$ with appropriately chosen dimension.]
+\end{enumerate}
+\end{homeworkProblem}
+
+
+% Problem 2
+\begin{homeworkProblem} %(15)
+
+We are interested in finding the fixed points (the points at which the time derivatives are zero) of the following system of equations:
+\begin{align*}
+\frac{dx_1}{dt} &= x_1(a-bx_2)\\
+\frac{dx_2}{dt} &= -x_2(c-dx_1)
+\end{align*}
+for $a = 3,\ b = 1,\ c = 2,\ d = 1$. We can use the Newton-Raphson method to find these fixed points, simply by setting the derivatives zero in the given system of equations. 
+\begin{enumerate}[(a)]
+\item
+In the scalar case, Newton-Raphson breaks down at points at which the derivative of the nonlinear function is zero. In general, where can it break down for systems of nonlinear equations? For the system given above, find the troublesome points.
+\item
+Find the fixed points of the above system analytically. 
+\item
+Find all fixed points using repeated application of the Newton-Raphson method. You will have to judiciously choose your starting points (but of course, you are not allowed to use the known roots as starting points!). You may use MATLAB to program the method if you like. 
+\end{enumerate}
+\end{homeworkProblem}
+
+
+% Problem 3
+\begin{homeworkProblem} %(15)
+\begin{enumerate}[(a)]
+\item
+From class we know that $P=A(A^TA)^{-1}A^T$ is an orthogonal projection matrix that projects onto the column space of $A$. Prove that $P$ is symmetric and $P^2= P^TP = P$. 
+\item[(b)]
+In general, a matrix which satisfies $P^2=P$ is a projector. Show that if a projector matrix is symmetric, then it is an orthogonal projector.
+\item[(c)]
+Show that regardless of the rank of $A$, the equation $A^TAx=A^T
+b$ always has at least one solution. 
+\end{enumerate}
+\end{homeworkProblem}
+  
+
+% Problem 4
+\begin{homeworkProblem} %(15)
+\begin{enumerate}[(a)]
+\item
+If $P^2 = P$, show that 
+\begin{align*}
+e^P \approx I + 1.718P
+\end{align*}
+\item
+Convert the equation below to a matrix equation and then by using the exponential matrix find the solution in terms of $y(0)$ and $y’(0)$:
+\begin{align*}
+y'' = 0
+\end{align*} 
+\item
+Show that $e^{A+B}=e^Ae^B$ is not generally true for matrices. 
+\end{enumerate}
+\end{homeworkProblem}
+  
+
+\end{document}
+ 
+ 
+ 

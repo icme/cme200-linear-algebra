@@ -1,0 +1,9 @@
+# PCTeX Project File, Version 1.1
+	name: MidtermSolutions2013
+	texformat: latex
+	typesetmode: PDF
+	spellwordlist: american
+MidtermSolutions2013.tex
+MidtermSolutions2013.log
+MidtermSolutions2013.aux
+MidtermSolutions2013.pdf

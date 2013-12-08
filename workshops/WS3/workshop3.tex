@@ -1,0 +1,210 @@
+\documentclass[preprint]{imsart}
+
+\RequirePackage[OT1]{fontenc}
+\RequirePackage{amsthm,amsmath}
+\RequirePackage[numbers]{natbib}
+\RequirePackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+
+\usepackage{amsfonts, amsopn, amssymb}
+  \numberwithin{equation}{section}
+\usepackage{color}
+\usepackage{graphicx, subcaption, epstopdf}
+\usepackage{hyperref}
+
+\startlocaldefs
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\endlocaldefs
+
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{remark}
+\newtheorem{remark}{*Remark}
+
+\input{macros.tex}
+
+% sets
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+
+\begin{document}
+
+\begin{frontmatter}
+\title{CME 200 Workshop 3}
+\runtitle{Workshop 3}
+\begin{aug}
+\runauthor{CME 200}
+\author{October 11, 2013}
+\end{aug}
+\end{frontmatter}
+
+\section{All bases of a subspace must have the same number of elements}
+
+\begin{proof}
+Suppose not. Let $\{u_1,\dots,u_k\}$ and $\{v_1,\dots,v_l\}$ be two bases of a subspace $S\subset\reals^n$. Without loss of generality, we assume $l > k$.\footnote{We simply define $\{u_1,\dots,u_k\}$ to be the set with the smaller number of elements.} $\cU$ is a basis of $S$ and $\{v_1,\dots,v_l\}\subset S$, so we can express $v_1,\dots,v_l$ in terms of $u_1,\dots,u_k$:
+\begin{align*}
+v_1 &= \sum_{i=1}^k \alpha_{i,1}u_i \\
+&\vdots \\
+v_l &= \sum_{i=1}^k \alpha_{i,l} u_i
+\end{align*}
+In matrix notation: 
+$$
+V = UA.
+$$
+$u_1,\dots,u_k$ and $v_1,\dots,v_{k+l}$ are the columns of $U\in\reals^{n\times k}$ and $V\in\reals^{n\times(k+l)}$, and $\alpha_{i,j}$ are the entries in $A\in\reals^{k\times(k+l)}$. $A$ has more columns than rows, so the columns of $A$ are linearly dependent. This means there is a $z\in\reals^{k+l}$ such that $Az = 0$. But this also means
+$$
+Vz = UAz = 0.
+$$
+This is a contradiction: we assumed $v_1,\dots,v_{k+l}$ are linearly independent.
+\end{proof}
+
+\section{Verifying two bases span the same subspace}
+
+To show two sets $A$ and $B$ are the same, we must show $A\subset B$ and $B\subset A$. In this case, we must check
+\begin{align*}
+\linspan(\{u_1,\dots,u_k\})\subset \linspan(\{v_1,\dots,v_k\}) \\
+\linspan(\{v_1,\dots,v_k\})\subset \linspan(\{u_1,\dots,u_k\}).
+\end{align*}
+
+To show 
+$$
+\linspan(\{u_1,\dots,u_k\})\subset \linspan(\{v_1,\dots,v_k\}),
+$$
+it suffices to show 
+$$
+\{u_1,\dots,u_k\}\subset\linspan(\{v_1,\dots,v_k\}).
+$$
+Why? Because if $u_1,\dots,u_k$ are linear combinations of $v_1,\dots,v_k$, then any linear combination of $u_1,\dots,u_k$ is also a linear combination of $v_1,\dots,v_k$:
+\begin{align*}
+\sum_{i=1}^k\alpha_iu_i = \sum_{i=1}^k\alpha_i\left(\sum_{j=1}^k\beta_{i,j}v_j\right) = \sum_{i=1}^k\left(\alpha_i\sum_{j=1}^k\beta_{i,j}\right)v_j.
+\end{align*}
+
+%\begin{remark}
+%In matrix notation:
+%$$
+%Ua = (VB)a = V(Ba).
+%$$
+%$u_1,\dots,u_k$ and $v_1,\dots,v_{k+l}$ are the columns of $U,V\in\reals^{n\times k}$. $\alpha_1,\dots,\alpha_k$ and $\beta_{i,j}$ are the entries in $a\in\reals^k$ and $B\in\reals^{k\times k}$. 
+%\end{remark}
+
+We can use the same trick (just swap $u_i$ and $v_i$) to show 
+$$
+\linspan(\{v_1,\dots,v_k\})\subset \linspan(\{u_1,\dots,u_k\}).
+$$
+
+\section{Effect on $x$ because of a perturbation to $b$ and $A$}
+
+We are interested in how the solution $x$ to the linear system $Ax = b$ changes when we perturb both $A$ and $b$. Consider the perturbed linear system
+$$
+(A + \Delta A)y = b + \Delta b.
+$$
+The perturbed solution $y$ can be expressed as $x + \Delta x$ for some $\Delta x$, so we have
+$$
+(A + \Delta A)(x + \Delta x) = b + \Delta b.
+$$
+Assuming $A + \Delta A$ is invertible, we solve for $\Delta x$ to obtain
+\begin{align}
+\Delta x &= (A + \Delta A)^{-1}(b + \Delta b - (A + \Delta A)x) \\
+&= (A + \Delta A)^{-1}(b + \Delta b) - x.
+\label{eq:delta-x}
+\end{align}
+If $\Delta A$ is small, then $(A + \Delta A)^{-1}\approx A^{-1} - A^{-1}\Delta A A^{-1}$. We substitute this expression into \eqref{eq:delta-x} 
+\begin{align*}
+\Delta x &\approx (A^{-1} - A^{-1}\Delta A A^{-1})(b + \Delta b) - x \\
+&= A^{-1}\Delta b - A^{-1}\Delta A A^{-1}(b + \Delta b) 
+\end{align*}
+and drop the second-order term $A^{-1}\Delta A A^{-1}\Delta b$ 
+\begin{align*}
+\Delta x &\approx A^{-1}\Delta b - A^{-1}\Delta A A^{-1}b \\
+& = A^{-1}(\Delta b - \Delta A x).
+\end{align*}
+We take norms to obtain
+$$
+\norm{\Delta x} \le \norm{A^{-1}}(\norm{\Delta b} + \norm{\Delta A}\norm{x}).
+$$
+We divide both sides by $\norm{x}$ 
+$$
+\frac{\norm{\Delta x}}{\norm{x}} \le \norm{A^{-1}}\left(\frac{\norm{\Delta b}}{\norm{x}} + \norm{\Delta A}\right)
+$$
+and use the fact that $\frac{1}{\norm{x}} \le \frac{\norm{A}}{\norm{b}}$ 
+\begin{align*}
+\frac{\norm{\Delta x}}{\norm{x}} &\le \norm{A^{-1}}\left(\norm{A}\frac{\norm{\Delta b}}{\norm{b}} + \norm{\Delta A}\right) \\
+&= \kappa(A)\left(\frac{\norm{\Delta b}}{\norm{b}} + \frac{\norm{\Delta A}}{\norm{A}}\right).
+\end{align*}
+
+\section{Questions}
+
+\BNUM
+\item Let $U$ and $V$ be subspaces of $\reals^n$. 
+\BNUM
+\item The \emph{intersection} of $U$ and $V$ is the set 
+$$
+U\cap V := \{x\in\reals^n\mid x\in U\text{ and }x\in V\}.
+$$
+Is $U\cap V$ a subspace for any $U$ and $V$? 
+
+Yes, since $U$ and $V$ are both closed under addition, the sum of any two vectors in both $U$ and $V$ must remain in both $U$ and $V$. $U$ and $V$ are also both closed under scalar multiplication, so a scalar multiple of a vector in both $U$ and $V$ must also remain in both $U$ and $V$.
+
+\item The \emph{union} of $U$ and $V$ is the set 
+$$
+U\cup V := \{x\in\reals^n\mid x\in U\text{ or }x\in V\}.
+$$
+Is $U\cup V$ a subspace for any $U$ and $V$? 
+
+No. For a counterexample, let $U\subset\reals^2$ be the $x$-axis and $V\subset\reals^2$ be the $y$-axis. The union of these two sets is closed under scalar multiplication, but not addition.
+\ENUM
+
+\item Suppose $u_1,\dots,u_k$ form a basis for a subspace $S$ and $x\in S$. Then there are $\alpha_1,\dots,\alpha_k$ such that
+$$
+x = \sum_{i=1}^k\alpha_iu_i
+$$
+Are $\alpha_1,\dots,\alpha_k$ unique? Can you form $x$ in terms of $u_1,\dots,u_k$ with a different set of coefficients?
+
+No the coefficients must be unique. If the coefficients are not unique, then $u_1,\dots,u_k$ are linearly dependent. To see this, suppose there are two sets of coefficients that give $x$:
+$$
+x = \sum_{i=1}^k \alpha_i u_i = \sum_{i=1}^k \beta_i u_i.
+$$
+If we subtract the second equation from the first, we obtain
+$$
+0 = \sum_{i = 1}^k (\alpha_i - \beta_i)u_i.
+$$
+If $\alpha \ne \beta_i$ for all $i$, then we have found a nontrivial linear combination of the $u_i$'s that yield zero. This contradicts the assumption that $u_1,\dots,u_k$ are linearly independent.
+
+\item Problem 11 in Workshop Problems for Week 3 
+\BNUM
+\item Let $L$ be the set of vectors $x$ in $\reals^4$ for which 
+\BEQ
+x_1 + x_2 + x_3 = 0.
+\label{eq:hyperplane}
+\EEQ
+Find a basis for $L$. What is the dimension of $L$?
+
+The dimension of $L$ is 3. Any 3 linearly independent vectors that satisfy \eqref{eq:hyperplane} would be a basis. An example is
+$$
+\left\{\BMAT 1 \\ -1 \\ 0 \\ 0 \EMAT,\BMAT 0 \\ 1 \\ -1 \\ 0 \EMAT,\BMAT 0 \\ 1 \\ -1 \\ 1 \EMAT\right\}.
+$$
+
+\item Find a basis for the subspace of $\reals^4$ spanned by the vectors 
+$$
+\BMAT 0 \\ 2 \\ 3 \\ 0\EMAT,\BMAT 0 \\ 0 \\ 1 \\ 0\EMAT,\BMAT 2 \\ 1 \\ 0 \\ 0\EMAT,\BMAT 0 \\ 1 \\ 1 \\ 0\EMAT.
+$$
+To find a basis, we attempt to row reduce the matrix whose rows are these four vectors:
+$$
+\BMAT
+2 & 1 & 0 & 0 \\
+0 & 2 & 3 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0
+\EMAT.
+$$
+We note that this matrix is already almost upper triangular (except the last row), and the last row is clearly a linear combination of the second and third rows. Hence this matrix has row-rank three and the first three rows form a basis for this subspace of $\reals^4$.
+\ENUM
+
+\ENUM
+
+\end{document}

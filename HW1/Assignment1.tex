@@ -1,0 +1,182 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{enumerate}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{Linear Algebra with Application\\
+to Engineering Computation}
+\chead{}
+\rhead{CME 200/ME300A\\
+M. Gerritsen\\
+Fall 2013}
+\headheight = 40pt
+
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+
+\title{Assignment 1 - Background review}
+\date{Issued: \today}
+\author{Due: October 2, in class\\
+No late assignments accepted}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\textbf{Important:}
+\begin{itemize}
+\item Give complete answers: Do not only give mathematical formulae, but explain what you are doing. Conversely, do not leave out critical intermediate steps in mathematical derivations. Point values are in parentheses.
+\item Write your \textbf{name} as well as your \textbf{Sunet ID} on your assignment. \textbf{Please staple pages together.} Points will be docked otherwise.
+\item Questions preceded by * are harder and/or more involved.
+\end{itemize}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+Indicate whether the following statements are TRUE or FALSE and motivate your answers clearly. To show a statement is false, it is sufficient to give one counterexample. If a statement is true, provide a general proof.
+\begin{enumerate}[(a)]
+\item If $A^2 + A = I$ then $A^{-1} = I + A $
+\item If all diagonal entries of A are zero, then A is singular.
+\end{enumerate}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+The product of two $n \times n$ lower triangular matrices is again lower triangular (all its entries above the main diagonal are zero). Prove it in general and confirm this with a 3-by-3 example. 
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+If $A = A^T$ and $B = B^T$ , which of these matrices are certainly symmetric? Justify your answer.
+\begin{enumerate}[(a)]
+\item $A^2 - B^2$
+\item $(A + B)(A - B)$
+\item $ABA$
+\item $ABAB$
+\end{enumerate}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+A {\it skew-symmetric} matrix is a matrix that satisfies $A^T = -A$. Prove that if $A$ is a skew-symmetric matrix, then for any vector $x$, we must have $x^TAx = 0$.
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+Suppose $A$ is an invertible matrix, and you exchange its first two rows to create a new matrix $B$.  Is the new matrix $B$ necessarily invertible?  If so, how could you find $B^{-1}$ from $A^{-1}$?  If not, why not?
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+Let $A$ be an invertible $n\times n$ matrix.  Prove that $A^m$ is also invertible and that $$\left(A^m\right)^{-1} = \left(A^{-1}\right)^m$$ for $m= 1, 2, 3,  \ldots$ 
+\end{homeworkProblem}
+
+
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}  (10)]
+Let $A$ be a $2\times 2$ matrix $\left( \begin{array}{cc}
+a_{11} & a_{12} \\
+a_{21} & a_{22} \end{array} \right)$ with $a_{11} \neq 0$ and let $\alpha = a_{21}/a_{11}$.  Show that $A$ can be factored into a product of the form
+\[ \left( \begin{array}{cc}
+1 & 0 \\
+\alpha & 1 \end{array} \right) 
+\left( \begin{array}{cc}
+a_ {11} & a_{12}\\
+0 & b  \end{array} \right)\]
+
+What is the value of $b$?
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}*  (20: 10 points each part)]
+\begin{enumerate}[(a)]
+\item Show that if the $n\times n$ matrices $A$ and $B$ are invertible, and if the matrix $A+B$ is also invertible, then the matrix $B^{-1} + A^{-1}$ is also invertible. 
+\item Assume that $C$ is a skew-symmetric matrix and that $D$ is a matrix defined as $$D=(I+C)(I-C)^{-1}$$  Prove that $D^TD=DD^T=I.$
+\end{enumerate}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}[Problem \arabic{homeworkProblemCounter}*  (10)]
+Given an $n \times n$ matrix $A$ with column vectors $\vec{a_1},\vec{a_2},\ldots,\vec{a_n},$ construct a matrix $B$ such that the matrix $AB$ has the columns $\vec{u_1},\vec{u_2},\ldots,\vec{u_n}$ with the following properties:
+\begin{enumerate}[(i)]
+\item $\vec{u_i} = \vec{a_i}, \quad i\neq j$
+\item $\vec{u_j} = \sum_{k=1}^j\alpha_k\vec{a_k}$,
+\end{enumerate}
+where $j$ is a fixed integer with $1\leq j \leq n$ and $j\neq 0$. 
+
+\end{homeworkProblem}
+
+%\begin{homeworkProblem}
+%\textbf{BONUS}\\
+%It is a well-known theorem that the set of all n by n invertible matrices form a group under matrix multiplication. Here you will prove this result for the set of all n by n invertible diagonal matrices. Recall that a group in the sense of abstract algebra is defined as a set $G$ equipped with a binary operation $\odot$ such that it exhibits
+%\begin{itemize}
+%\item \textbf{Closure:} $\forall a, b \in G, a\odot b \in G$
+%\item \textbf{Associativity:} $\forall a, b, c \in G, (a\odot b)\odot c = a\odot (b\odot c)$
+%\item \textbf{Identity Element:} $\exists e \in G \mid e\odot a = a\odot e = a$
+%\item \textbf{Inverse Element:} $\forall a \in G, \exists b \in G \mid a\odot b = b\odot a = e$
+%\end{itemize}
+%Show that the set of n by n invertible diagonal matrices satisfy the axioms of a group under multiplication.
+%\emph{HINT:} Try out a few examples on 3 by 3 matrices and generalize. 
+%\end{homeworkProblem}
+
+\end{document}
