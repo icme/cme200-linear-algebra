@@ -1,2 +1,3 @@
-cme200
-======
+# CME 200: Linear Algebra with Application to Engineering Computations
+
+Computer based solution of systems of algebraic equations obtained from engineering problems and eigen-system analysis, Gaussian elimination, effect of round-off error, operation counts, banded matrices arising from discretization of differential equations, ill-conditioned matrices, matrix theory, least square solution of unsolvable systems, solution of non-linear algebraic equations, eigenvalues and eigenvectors, similar matrices, unitary and Hermitian matrices, positive definiteness, Cayley-Hamilton theory and function of a matrix and iterative methods. Prerequisite: familiarity with computer programming, and MATH51.
